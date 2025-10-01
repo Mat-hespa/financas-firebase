@@ -1,0 +1,174 @@
+<div class="dashboard-container">
+  <!-- Header moderno -->
+  <header class="modern-header">
+    <div class="header-top">
+      <div class="user-greeting">
+        <h1>Olá!</h1>
+        <p *ngIf="user">{{user.email}}</p>
+      </div>
+      <button class="profile-btn" (click)="logout()">
+        <span class="material-icons">logout</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Saldo principal -->
+  <section class="balance-section">
+    <div class="balance-card">
+      <div class="balance-header">
+        <span class="balance-label">Saldo total</span>
+        <button class="visibility-toggle">
+          <span class="material-icons">visibility</span>
+        </button>
+      </div>
+      <div class="balance-amount">
+        <h2 *ngIf="currentBalance$ | async as balance; else loadingBalance">
+          {{ balance | currency:'BRL':'symbol':'1.2-2':'pt' }}
+        </h2>
+        <ng-template #loadingBalance>
+          <div class="balance-loading">
+            <div class="balance-skeleton"></div>
+          </div>
+        </ng-template>
+      </div>
+      <div class="balance-variation positive">
+        <span class="material-icons">trending_up</span>
+        <span>Saldo atual</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Cards de resumo -->
+  <section class="summary-section">
+    <div class="summary-cards">
+      <!-- Card de Receitas -->
+      <div class="summary-card income" [class.large-value]="(monthlyTotals$ | async)?.income && isLargeValue((monthlyTotals$ | async)!.income)">
+        <div class="card-icon">
+          <span class="material-icons">arrow_downward</span>
+        </div>
+        <div class="card-content">
+          <span class="card-label">Receitas</span>
+          <div class="card-amount-container">
+            <span class="card-amount" *ngIf="monthlyTotals$ | async as totals; else loadingIncome">
+              {{ totals.income | currency:'BRL':'symbol':'1.2-2':'pt' }}
+            </span>
+            <ng-template #loadingIncome>
+              <div class="card-loading">
+                <div class="loading-skeleton"></div>
+              </div>
+            </ng-template>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card de Gastos -->
+      <div class="summary-card expense" [class.large-value]="(monthlyTotals$ | async)?.expense && isLargeValue((monthlyTotals$ | async)!.expense)">
+        <div class="card-icon">
+          <span class="material-icons">arrow_upward</span>
+        </div>
+        <div class="card-content">
+          <span class="card-label">Gastos</span>
+          <div class="card-amount-container">
+            <span class="card-amount" *ngIf="monthlyTotals$ | async as totals; else loadingExpense">
+              {{ totals.expense | currency:'BRL':'symbol':'1.2-2':'pt' }}
+            </span>
+            <ng-template #loadingExpense>
+              <div class="card-loading">
+                <div class="loading-skeleton"></div>
+              </div>
+            </ng-template>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Ações rápidas -->
+  <section class="quick-actions">
+    <h3>Ações rápidas</h3>
+    <div class="actions-grid">
+      <button class="action-button primary" (click)="addTransaction()">
+        <div class="action-icon">
+          <span class="material-icons">add</span>
+        </div>
+        <span>Adicionar<br>transação</span>
+      </button>
+
+      <button class="action-button secondary" (click)="viewAnalytics()">
+        <div class="action-icon">
+          <span class="material-icons">analytics</span>
+        </div>
+        <span>Ver<br>relatórios</span>
+      </button>
+
+      <!-- <button class="action-button secondary">
+        <div class="action-icon">
+          <span class="material-icons">account_balance</span>
+        </div>
+        <span>Minhas<br>contas</span>
+      </button>
+
+      <button class="action-button secondary">
+        <div class="action-icon">
+          <span class="material-icons">settings</span>
+        </div>
+        <span>Configurações</span>
+      </button> -->
+    </div>
+  </section>
+
+  <!-- Transações recentes -->
+  <section class="recent-transactions">
+    <div class="section-header">
+      <h3>Transações recentes</h3>
+      <button class="see-all-btn">Ver todas</button>
+    </div>
+
+    <div class="transactions-list">
+      <!-- Loading skeleton para transações -->
+      <ng-container *ngIf="recentTransactions$ | async as transactions; else loadingTransactions">
+        <div class="transaction-item" *ngFor="let transaction of transactions">
+          <div class="transaction-icon" [class]="transaction.type">
+            <span class="material-icons">{{ getCategoryIcon(transaction.category) }}</span>
+          </div>
+          <div class="transaction-details">
+            <span class="transaction-title">{{ transaction.description }}</span>
+            <span class="transaction-date">{{ formatDate(transaction.date) }}</span>
+          </div>
+          <span class="transaction-amount" [class]="transaction.type">
+            {{ transaction.type === 'income' ? '+' : '-' }}{{ transaction.amount | currency:'BRL':'symbol':'1.2-2':'pt' }}
+          </span>
+        </div>
+
+        <!-- Estado vazio -->
+        <div class="empty-transactions" *ngIf="transactions.length === 0">
+          <div class="empty-icon">
+            <span class="material-icons">receipt_long</span>
+          </div>
+          <p>Nenhuma transação ainda</p>
+          <button class="add-first-transaction" (click)="addTransaction()">
+            <span class="material-icons">add</span>
+            Adicionar primeira transação
+          </button>
+        </div>
+      </ng-container>
+
+      <!-- Template de loading -->
+      <ng-template #loadingTransactions>
+        <div class="transaction-skeleton" *ngFor="let item of [1,2,3]">
+          <div class="transaction-icon-skeleton"></div>
+          <div class="transaction-details-skeleton">
+            <div class="transaction-title-skeleton"></div>
+            <div class="transaction-date-skeleton"></div>
+          </div>
+          <div class="transaction-amount-skeleton"></div>
+        </div>
+      </ng-template>
+    </div>
+  </section>
+
+  <!-- Floating Action Button -->
+  <button class="fab" (click)="addTransaction()">
+    <span class="material-icons">add</span>
+  </button>
+</div>

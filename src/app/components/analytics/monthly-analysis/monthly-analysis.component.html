@@ -1,0 +1,217 @@
+<div class="analytics-container">
+  <!-- Header moderno -->
+  <header class="modern-header">
+    <div class="header-top">
+      <button class="back-btn" (click)="goBack()">
+        <span class="material-icons">arrow_back</span>
+      </button>
+      <h1>Relatórios</h1>
+      <div></div> <!-- Placeholder para centralizar -->
+    </div>
+  </header>
+
+  <!-- Seletor de mês moderno -->
+  <section class="month-selector">
+    <div class="month-navigation">
+      <button class="nav-btn" (click)="previousMonth()">
+        <span class="material-icons">chevron_left</span>
+      </button>
+
+      <div class="month-display">
+        <h2>{{ getMonthName(currentMonth) }}</h2>
+        <span class="year">{{ currentYear }}</span>
+      </div>
+
+      <button class="nav-btn" (click)="nextMonth()" [disabled]="isCurrentMonth()">
+        <span class="material-icons">chevron_right</span>
+      </button>
+    </div>
+  </section>
+
+  <!-- Loading -->
+  <div *ngIf="isLoading" class="loading-container">
+    <div class="spinner material-icons">refresh</div>
+    <p>Carregando análise...</p>
+  </div>
+
+  <!-- Conteúdo -->
+  <div *ngIf="!isLoading" class="content">
+    <!-- Resumo geral -->
+    <section class="summary-overview" *ngIf="monthlyData">
+      <div class="summary-cards">
+        <div class="summary-card income">
+          <div class="card-icon">
+            <span class="material-icons">trending_up</span>
+          </div>
+          <div class="card-content">
+            <span class="card-label">Total de Receitas</span>
+            <span class="card-amount">{{ monthlyData.totalIncome | currency:'BRL':'symbol':'1.2-2':'pt' }}</span>
+          </div>
+        </div>
+
+        <div class="summary-card expense">
+          <div class="card-icon">
+            <span class="material-icons">trending_down</span>
+          </div>
+          <div class="card-content">
+            <span class="card-label">Total de Gastos</span>
+            <span class="card-amount">{{ monthlyData.totalExpense | currency:'BRL':'symbol':'1.2-2':'pt' }}</span>
+          </div>
+        </div>
+
+        <div class="summary-card balance" [class.positive]="monthlyData.balance >= 0" [class.negative]="monthlyData.balance < 0">
+          <div class="card-icon">
+            <span class="material-icons">{{ monthlyData.balance >= 0 ? 'savings' : 'money_off' }}</span>
+          </div>
+          <div class="card-content">
+            <span class="card-label">Saldo do Mês</span>
+            <span class="card-amount">{{ monthlyData.balance | currency:'BRL':'symbol':'1.2-2':'pt' }}</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Gráfico de pizza -->
+    <section class="chart-section" *ngIf="expensesByCategory && expensesByCategory.length > 0">
+      <div class="section-header">
+        <h3>Distribuição de Gastos</h3>
+        <span class="total-expenses">Total: {{ monthlyData?.totalExpense | currency:'BRL':'symbol':'1.2-2':'pt' }}</span>
+      </div>
+
+      <div class="pie-chart-container">
+        <div class="pie-chart">
+          <svg viewBox="0 0 200 200" class="pie-svg">
+            <g *ngFor="let segment of pieSegments; let i = index"
+               class="pie-segment">
+              <path [attr.d]="segment.path"
+                    [attr.fill]="segment.color"
+                    [attr.stroke]="'#ffffff'"
+                    [attr.stroke-width]="'2'">
+              </path>
+            </g>
+
+            <!-- Centro do gráfico -->
+            <circle cx="100" cy="100" r="40" fill="#ffffff" stroke="#e5e7eb" stroke-width="2"></circle>
+            <text x="100" y="95" text-anchor="middle" class="chart-center-label">Gastos</text>
+            <text x="100" y="110" text-anchor="middle" class="chart-center-value">{{ expensesByCategory.length }}</text>
+            <text x="100" y="120" text-anchor="middle" class="chart-center-subtitle">categorias</text>
+          </svg>
+        </div>
+
+        <!-- Legenda do gráfico -->
+        <div class="chart-legend">
+          <div class="legend-item" *ngFor="let category of expensesByCategory">
+            <div class="legend-color" [style.background-color]="category.color"></div>
+            <span class="legend-label">{{ category.name }}</span>
+            <span class="legend-percentage">{{ category.percentage }}%</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Análise detalhada por categoria -->
+    <section class="category-analysis" *ngIf="expensesByCategory && expensesByCategory.length > 0">
+      <div class="section-header">
+        <h3>Análise por Categoria</h3>
+      </div>
+
+      <!-- Categoria com maior gasto -->
+      <div class="top-category" *ngIf="topExpenseCategory">
+        <div class="highlight-card">
+          <div class="category-info">
+            <div class="category-icon" [style.background-color]="topExpenseCategory.color">
+              <span class="material-icons">{{ topExpenseCategory.icon }}</span>
+            </div>
+            <div class="category-details">
+              <h4>Maior Gasto</h4>
+              <p>{{ topExpenseCategory.name }}</p>
+              <span class="amount">{{ topExpenseCategory.amount | currency:'BRL':'symbol':'1.2-2':'pt' }}</span>
+            </div>
+          </div>
+          <div class="percentage-badge">
+            <span>{{ topExpenseCategory.percentage }}%</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Lista de todas as categorias -->
+      <div class="categories-list">
+        <div class="category-item" *ngFor="let category of expensesByCategory">
+          <div class="category-header">
+            <div class="category-icon" [style.background-color]="category.color">
+              <span class="material-icons">{{ category.icon }}</span>
+            </div>
+            <div class="category-info">
+              <span class="category-name">{{ category.name }}</span>
+              <span class="transaction-count">{{ category.transactionCount }} transação(ões)</span>
+            </div>
+            <div class="category-values">
+              <span class="percentage">{{ category.percentage }}%</span>
+              <span class="amount">{{ category.amount | currency:'BRL':'symbol':'1.2-2':'pt' }}</span>
+            </div>
+          </div>
+
+          <!-- Barra de progresso -->
+          <div class="progress-bar">
+            <div class="progress-fill"
+                 [style.width.%]="category.percentage"
+                 [style.background-color]="category.color">
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Insights e dicas -->
+    <section class="insights-section" *ngIf="monthlyData">
+      <div class="section-header">
+        <h3>Insights do Mês</h3>
+      </div>
+
+      <div class="insights-list">
+        <div class="insight-card" *ngIf="monthlyData.balance < 0">
+          <div class="insight-icon warning">
+            <span class="material-icons">warning</span>
+          </div>
+          <div class="insight-content">
+            <h4>Atenção aos Gastos</h4>
+            <p>Seus gastos superaram as receitas em {{ (monthlyData.balance * -1) | currency:'BRL':'symbol':'1.2-2':'pt' }}</p>
+          </div>
+        </div>
+
+        <div class="insight-card" *ngIf="monthlyData.balance > 0">
+          <div class="insight-icon success">
+            <span class="material-icons">trending_up</span>
+          </div>
+          <div class="insight-content">
+            <h4>Parabéns!</h4>
+            <p>Você economizou {{ monthlyData.balance | currency:'BRL':'symbol':'1.2-2':'pt' }} este mês</p>
+          </div>
+        </div>
+
+        <div class="insight-card" *ngIf="topExpenseCategory && topExpenseCategory.percentage > 50">
+          <div class="insight-icon info">
+            <span class="material-icons">info</span>
+          </div>
+          <div class="insight-content">
+            <h4>Concentração de Gastos</h4>
+            <p>{{ topExpenseCategory.name }} representa {{ topExpenseCategory.percentage }}% dos seus gastos</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- Estado vazio -->
+  <div class="empty-state" *ngIf="!isLoading && (!monthlyData || (!monthlyData.totalIncome && !monthlyData.totalExpense))">
+    <div class="empty-icon">
+      <span class="material-icons">assessment</span>
+    </div>
+    <h3>Nenhum dado encontrado</h3>
+    <p>Não há transações para este mês</p>
+    <button class="add-transaction-btn" (click)="addTransaction()">
+      <span class="material-icons">add</span>
+      Adicionar transação
+    </button>
+  </div>
+</div>

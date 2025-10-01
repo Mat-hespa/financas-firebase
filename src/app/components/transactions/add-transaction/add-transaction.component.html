@@ -1,0 +1,112 @@
+<div class="add-transaction-container">
+  <!-- Header -->
+  <header class="modern-header">
+    <div class="header-top">
+      <button class="back-btn" (click)="goBack()">
+        <span class="material-icons">arrow_back</span>
+      </button>
+      <h1>Nova Transação</h1>
+      <div></div> <!-- Placeholder para centralizar -->
+    </div>
+  </header>
+
+  <!-- Conteúdo principal -->
+  <div class="content">
+    <!-- Seletor de tipo -->
+    <section class="type-selector">
+      <div class="type-buttons">
+        <button
+          class="type-btn"
+          [class.active]="selectedType === 'income'"
+          (click)="selectType('income')">
+          <span class="material-icons">trending_up</span>
+          <span>Receita</span>
+        </button>
+        <button
+          class="type-btn"
+          [class.active]="selectedType === 'expense'"
+          (click)="selectType('expense')">
+          <span class="material-icons">trending_down</span>
+          <span>Gasto</span>
+        </button>
+      </div>
+    </section>
+
+    <!-- Formulário -->
+    <form [formGroup]="transactionForm" (ngSubmit)="onSubmit()" class="transaction-form">
+      <!-- Valor -->
+      <div class="form-group">
+        <label>Valor</label>
+        <div class="input-wrapper">
+          <span class="currency">R$</span>
+          <input
+            type="number"
+            formControlName="amount"
+            placeholder="0,00"
+            step="0.01"
+            min="0">
+        </div>
+        <div class="error" *ngIf="transactionForm.get('amount')?.touched && transactionForm.get('amount')?.errors">
+          <span *ngIf="transactionForm.get('amount')?.errors?.['required']">Valor é obrigatório</span>
+          <span *ngIf="transactionForm.get('amount')?.errors?.['min']">Valor deve ser maior que zero</span>
+        </div>
+      </div>
+
+      <!-- Descrição -->
+      <div class="form-group">
+        <label>Descrição</label>
+        <input
+          type="text"
+          formControlName="description"
+          placeholder="Ex: Almoço no restaurante">
+        <div class="error" *ngIf="transactionForm.get('description')?.touched && transactionForm.get('description')?.errors">
+          <span *ngIf="transactionForm.get('description')?.errors?.['required']">Descrição é obrigatória</span>
+          <span *ngIf="transactionForm.get('description')?.errors?.['minlength']">Mínimo 3 caracteres</span>
+        </div>
+      </div>
+
+      <!-- Data -->
+      <div class="form-group">
+        <label>Data</label>
+        <input
+          type="date"
+          formControlName="date">
+      </div>
+
+      <!-- Categorias -->
+      <div class="form-group">
+        <label>Categoria</label>
+        <div class="categories-grid">
+          <button
+            type="button"
+            class="category-btn"
+            [class.selected]="selectedCategory === category.id"
+            *ngFor="let category of categories"
+            (click)="selectCategory(category.id)">
+            <div class="category-icon" [style.background-color]="category.color">
+              <span class="material-icons">{{ category.icon }}</span>
+            </div>
+            <span>{{ category.name }}</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Erro geral -->
+      <div class="error-message" *ngIf="error">
+        {{ error }}
+      </div>
+
+      <!-- Botão de submit -->
+      <button
+        type="submit"
+        class="submit-btn"
+        [disabled]="isLoading || transactionForm.invalid || !selectedCategory">
+        <span *ngIf="!isLoading">Salvar Transação</span>
+        <span *ngIf="isLoading" class="loading">
+          <span class="spinner material-icons">refresh</span>
+          Salvando...
+        </span>
+      </button>
+    </form>
+  </div>
+</div>

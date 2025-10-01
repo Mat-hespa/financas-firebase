@@ -1,0 +1,74 @@
+<div class="login-container">
+  <!-- Header com logo -->
+  <div class="header-section">
+    <div class="logo">
+      <div class="logo-icon">
+        <mat-icon>account_balance_wallet</mat-icon>
+      </div>
+      <h1 class="app-title">FinanceApp</h1>
+    </div>
+  </div>
+
+  <!-- Conteúdo principal -->
+  <div class="content-section">
+    <div class="welcome-text">
+      <h2>Bem-vindo de volta</h2>
+      <p>Entre na sua conta para continuar</p>
+    </div>
+
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="login-form">
+      <div class="input-group">
+        <input
+          type="email"
+          formControlName="email"
+          placeholder="Email"
+          class="modern-input"
+          [class.error]="loginForm.get('email')?.invalid && loginForm.get('email')?.touched"
+        >
+        <div class="error-message" *ngIf="loginForm.get('email')?.invalid && loginForm.get('email')?.touched">
+          {{getErrorMessage('email')}}
+        </div>
+      </div>
+
+      <div class="input-group">
+        <div class="password-container">
+          <input
+            [type]="hidePassword ? 'password' : 'text'"
+            formControlName="password"
+            placeholder="Senha"
+            class="modern-input"
+            [class.error]="loginForm.get('password')?.invalid && loginForm.get('password')?.touched"
+          >
+          <button
+            type="button"
+            class="password-toggle"
+            (click)="hidePassword = !hidePassword"
+          >
+            <mat-icon>{{hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
+          </button>
+        </div>
+        <div class="error-message" *ngIf="loginForm.get('password')?.invalid && loginForm.get('password')?.touched">
+          {{getErrorMessage('password')}}
+        </div>
+      </div>
+
+      <button
+        type="submit"
+        class="primary-button"
+        [disabled]="loginForm.invalid || isLoading"
+      >
+        <span *ngIf="!isLoading">Entrar</span>
+        <span *ngIf="isLoading" class="loading-text">
+          <mat-icon class="spinner">refresh</mat-icon>
+          Entrando...
+        </span>
+      </button>
+    </form>
+  </div>
+
+  <!-- Footer -->
+  <div class="footer-section">
+    <p class="signup-text">Não tem uma conta?</p>
+    <a routerLink="/register" class="link-button">Criar conta</a>
+  </div>
+</div>
