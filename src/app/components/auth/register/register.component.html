@@ -1,27 +1,32 @@
 <div class="register-container">
-  <!-- Header com logo -->
-  <div class="header-section">
-    <div class="logo">
-      <div class="logo-icon">
-        <mat-icon>account_balance_wallet</mat-icon>
-      </div>
-      <h1 class="app-title">FinanceApp</h1>
-    </div>
+  <!-- Logo flutuante no topo -->
+
+  <!-- Background decoration -->
+  <div class="background-decoration">
+    <div class="decoration-circle circle-1"></div>
+    <div class="decoration-circle circle-2"></div>
+    <div class="decoration-circle circle-3"></div>
   </div>
 
-  <!-- Conteúdo principal -->
-  <div class="content-section">
-    <div class="welcome-text">
-      <h2>Criar nova conta</h2>
-      <p>Comece a organizar suas finanças hoje</p>
+  <!-- Conteúdo principal centralizado -->
+  <div class="main-content">
+    <!-- Welcome section -->
+    <div class="welcome-section">
+      <h1 class="app-title">FinanceApp</h1>
+      <div class="welcome-text">
+        <h2>Criar nova conta</h2>
+        <p>Comece a organizar suas finanças hoje</p>
+      </div>
     </div>
 
+    <!-- Formulário de registro -->
     <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="register-form">
       <div class="input-group">
+        <label class="input-label">Email</label>
         <input
           type="email"
           formControlName="email"
-          placeholder="Email"
+          placeholder="seu@email.com"
           class="modern-input"
           [class.error]="registerForm.get('email')?.invalid && registerForm.get('email')?.touched"
         >
@@ -31,11 +36,12 @@
       </div>
 
       <div class="input-group">
+        <label class="input-label">Senha</label>
         <div class="password-container">
           <input
             [type]="hidePassword ? 'password' : 'text'"
             formControlName="password"
-            placeholder="Senha"
+            placeholder="Sua senha"
             class="modern-input"
             [class.error]="registerForm.get('password')?.invalid && registerForm.get('password')?.touched"
           >
@@ -44,7 +50,7 @@
             class="password-toggle"
             (click)="hidePassword = !hidePassword"
           >
-            <mat-icon>{{hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
+            <span class="material-icons">{{hidePassword ? 'visibility_off' : 'visibility'}}</span>
           </button>
         </div>
         <div class="error-message" *ngIf="registerForm.get('password')?.invalid && registerForm.get('password')?.touched">
@@ -53,11 +59,12 @@
       </div>
 
       <div class="input-group">
+        <label class="input-label">Confirmar senha</label>
         <div class="password-container">
           <input
             [type]="hideConfirmPassword ? 'password' : 'text'"
             formControlName="confirmPassword"
-            placeholder="Confirmar senha"
+            placeholder="Confirme sua senha"
             class="modern-input"
             [class.error]="registerForm.get('confirmPassword')?.invalid && registerForm.get('confirmPassword')?.touched"
           >
@@ -66,7 +73,7 @@
             class="password-toggle"
             (click)="hideConfirmPassword = !hideConfirmPassword"
           >
-            <mat-icon>{{hideConfirmPassword ? 'visibility_off' : 'visibility'}}</mat-icon>
+            <span class="material-icons">{{hideConfirmPassword ? 'visibility_off' : 'visibility'}}</span>
           </button>
         </div>
         <div class="error-message" *ngIf="registerForm.get('confirmPassword')?.invalid && registerForm.get('confirmPassword')?.touched">
@@ -79,18 +86,20 @@
         class="primary-button"
         [disabled]="registerForm.invalid || isLoading"
       >
-        <span *ngIf="!isLoading">Criar conta</span>
+        <span *ngIf="!isLoading">
+          Criar conta
+        </span>
         <span *ngIf="isLoading" class="loading-text">
-          <mat-icon class="spinner">refresh</mat-icon>
+          <span class="material-icons spinner">refresh</span>
           Criando...
         </span>
       </button>
     </form>
-  </div>
 
-  <!-- Footer -->
-  <div class="footer-section">
-    <p class="login-text">Já tem uma conta?</p>
-    <a routerLink="/login" class="link-button">Fazer login</a>
+    <!-- Footer -->
+    <div class="footer-section">
+      <p class="login-text">Já tem uma conta?</p>
+      <a routerLink="/login" class="link-button">Fazer login</a>
+    </div>
   </div>
 </div>
