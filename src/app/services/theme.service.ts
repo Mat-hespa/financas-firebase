@@ -35,7 +35,25 @@ export class ThemeService {
       document.documentElement.classList.remove('dark');
     }
     
+    // Atualizar meta tag theme-color dinamicamente
+    this.updateThemeColor(isDark);
+    
     // Salvar preferência
     localStorage.setItem(this.THEME_KEY, isDark ? 'dark' : 'light');
+  }
+
+  private updateThemeColor(isDark: boolean): void {
+    const themeColorMeta = document.querySelector('meta[name="theme-color"]');
+    const backgroundColor = isDark ? '#0f172a' : '#fafbfc';
+    
+    if (themeColorMeta) {
+      themeColorMeta.setAttribute('content', backgroundColor);
+    }
+    
+    // Também atualizar para iOS
+    const appleStatusBarMeta = document.querySelector('meta[name="apple-mobile-web-app-status-bar-style"]');
+    if (appleStatusBarMeta) {
+      appleStatusBarMeta.setAttribute('content', isDark ? 'black-translucent' : 'default');
+    }
   }
 }
