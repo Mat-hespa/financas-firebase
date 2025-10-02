@@ -1,0 +1,9 @@
+.app-container {
+  min-height: 100vh;
+  background: var(--background-primary);
+  transition: background-color 0.3s ease;
+}
+
+.main-content {
+  padding-bottom: 80px; // Espaço para o footer
+}

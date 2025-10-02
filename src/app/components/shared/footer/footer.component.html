@@ -1,0 +1,28 @@
+<footer class="app-footer">
+  <nav class="footer-nav">
+    <button 
+      class="nav-button" 
+      [class.active]="isActiveRoute('/dashboard')"
+      (click)="navigateTo('/dashboard')">
+      <span class="material-icons">dashboard</span>
+      <span class="nav-label">Dashboard</span>
+    </button>
+
+    <button 
+      class="nav-button add-transaction-btn" 
+      (click)="navigateTo('/add-transaction')">
+      <div class="add-icon">
+        <span class="material-icons">add</span>
+      </div>
+      <span class="nav-label">Nova Transação</span>
+    </button>
+
+    <button 
+      class="nav-button" 
+      [class.active]="isActiveRoute('/analytics')"
+      (click)="navigateTo('/analytics')">
+      <span class="material-icons">analytics</span>
+      <span class="nav-label">Relatórios</span>
+    </button>
+  </nav>
+</footer>

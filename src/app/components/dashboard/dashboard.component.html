@@ -1,29 +1,28 @@
 <div class="dashboard-container">
-  <!-- Header moderno -->
-  <header class="modern-header">
-    <div class="header-top">
-      <div class="user-greeting">
+  <!-- Saldo principal -->
+  <section class="balance-section">
+    <div class="user-greeting">
+      <div class="greeting-content">
         <h1>Olá!</h1>
         <p *ngIf="user">{{user.email}}</p>
       </div>
-      <button class="profile-btn" (click)="logout()">
-        <span class="material-icons">logout</span>
-      </button>
     </div>
-  </header>
-
-  <!-- Saldo principal -->
-  <section class="balance-section">
+    
     <div class="balance-card">
       <div class="balance-header">
         <span class="balance-label">Saldo total</span>
-        <button class="visibility-toggle">
-          <span class="material-icons">visibility</span>
-        </button>
+        <div class="header-actions">
+          <button class="visibility-toggle" (click)="toggleBalanceVisibility()" [title]="isBalanceVisible ? 'Ocultar valores' : 'Mostrar valores'">
+            <span class="material-icons">{{ isBalanceVisible ? 'visibility' : 'visibility_off' }}</span>
+          </button>
+          <button class="logout-btn" (click)="logout()" title="Sair">
+            <span class="material-icons">logout</span>
+          </button>
+        </div>
       </div>
       <div class="balance-amount">
-        <h2 *ngIf="currentBalance$ | async as balance; else loadingBalance">
-          {{ balance | currency:'BRL':'symbol':'1.2-2':'pt' }}
+        <h2 *ngIf="!isLoadingBalance; else loadingBalance" [class.hidden-value]="!isBalanceVisible">
+          {{ isBalanceVisible ? (currentBalance | currency:'BRL':'symbol':'1.2-2':'pt') : getHiddenValue(currentBalance) }}
         </h2>
         <ng-template #loadingBalance>
           <div class="balance-loading">
@@ -42,15 +41,15 @@
   <section class="summary-section">
     <div class="summary-cards">
       <!-- Card de Receitas -->
-      <div class="summary-card income" [class.large-value]="(monthlyTotals$ | async)?.income && isLargeValue((monthlyTotals$ | async)!.income)">
+      <div class="summary-card income" [class.large-value]="monthlyTotals.income && isLargeValue(monthlyTotals.income)">
         <div class="card-icon">
           <span class="material-icons">arrow_downward</span>
         </div>
         <div class="card-content">
           <span class="card-label">Receitas</span>
           <div class="card-amount-container">
-            <span class="card-amount" *ngIf="monthlyTotals$ | async as totals; else loadingIncome">
-              {{ totals.income | currency:'BRL':'symbol':'1.2-2':'pt' }}
+            <span class="card-amount" [class.hidden-value]="!isBalanceVisible" *ngIf="!isLoadingTotals; else loadingIncome">
+              {{ isBalanceVisible ? (monthlyTotals.income | currency:'BRL':'symbol':'1.2-2':'pt') : getHiddenValue(monthlyTotals.income) }}
             </span>
             <ng-template #loadingIncome>
               <div class="card-loading">
@@ -62,15 +61,15 @@
       </div>
 
       <!-- Card de Gastos -->
-      <div class="summary-card expense" [class.large-value]="(monthlyTotals$ | async)?.expense && isLargeValue((monthlyTotals$ | async)!.expense)">
+      <div class="summary-card expense" [class.large-value]="monthlyTotals.expense && isLargeValue(monthlyTotals.expense)">
         <div class="card-icon">
           <span class="material-icons">arrow_upward</span>
         </div>
         <div class="card-content">
           <span class="card-label">Gastos</span>
           <div class="card-amount-container">
-            <span class="card-amount" *ngIf="monthlyTotals$ | async as totals; else loadingExpense">
-              {{ totals.expense | currency:'BRL':'symbol':'1.2-2':'pt' }}
+            <span class="card-amount" [class.hidden-value]="!isBalanceVisible" *ngIf="!isLoadingTotals; else loadingExpense">
+              {{ isBalanceVisible ? (monthlyTotals.expense | currency:'BRL':'symbol':'1.2-2':'pt') : getHiddenValue(monthlyTotals.expense) }}
             </span>
             <ng-template #loadingExpense>
               <div class="card-loading">
@@ -100,20 +99,6 @@
         </div>
         <span>Ver<br>relatórios</span>
       </button>
-
-      <!-- <button class="action-button secondary">
-        <div class="action-icon">
-          <span class="material-icons">account_balance</span>
-        </div>
-        <span>Minhas<br>contas</span>
-      </button>
-
-      <button class="action-button secondary">
-        <div class="action-icon">
-          <span class="material-icons">settings</span>
-        </div>
-        <span>Configurações</span>
-      </button> -->
     </div>
   </section>
 
@@ -126,8 +111,8 @@
 
     <div class="transactions-list">
       <!-- Loading skeleton para transações -->
-      <ng-container *ngIf="recentTransactions$ | async as transactions; else loadingTransactions">
-        <div class="transaction-item" *ngFor="let transaction of transactions">
+      <ng-container *ngIf="!isLoadingTransactions; else loadingTransactions">
+        <div class="transaction-item" *ngFor="let transaction of recentTransactions">
           <div class="transaction-icon" [class]="transaction.type">
             <span class="material-icons">{{ getCategoryIcon(transaction.category) }}</span>
           </div>
@@ -135,13 +120,16 @@
             <span class="transaction-title">{{ transaction.description }}</span>
             <span class="transaction-date">{{ formatDate(transaction.date) }}</span>
           </div>
-          <span class="transaction-amount" [class]="transaction.type">
-            {{ transaction.type === 'income' ? '+' : '-' }}{{ transaction.amount | currency:'BRL':'symbol':'1.2-2':'pt' }}
+          <span class="transaction-amount" [class]="transaction.type" [class.hidden-value]="!isBalanceVisible">
+            {{ isBalanceVisible ? 
+              (transaction.type === 'income' ? '+' : '-') + (transaction.amount | currency:'BRL':'symbol':'1.2-2':'pt') :
+              (transaction.type === 'income' ? '+' : '-') + getHiddenValue(transaction.amount)
+            }}
           </span>
         </div>
 
         <!-- Estado vazio -->
-        <div class="empty-transactions" *ngIf="transactions.length === 0">
+        <div class="empty-transactions" *ngIf="recentTransactions.length === 0">
           <div class="empty-icon">
             <span class="material-icons">receipt_long</span>
           </div>
@@ -166,9 +154,4 @@
       </ng-template>
     </div>
   </section>
-
-  <!-- Floating Action Button -->
-  <button class="fab" (click)="addTransaction()">
-    <span class="material-icons">add</span>
-  </button>
 </div>

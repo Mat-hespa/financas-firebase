@@ -1,34 +1,17 @@
 .add-transaction-container {
   min-height: 100vh;
-  background: #f8fafc;
-  padding-bottom: 40px;
+  background: var(--background-primary);
+  padding: 20px 0 40px;
+  transition: background-color 0.3s ease;
 }
 
-// Header
-.modern-header {
-  background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
-  color: white;
-  padding: 60px 24px 32px;
-  position: relative;
-
-  &::after {
-    content: '';
-    position: absolute;
-    bottom: -20px;
-    left: 0;
-    right: 0;
-    height: 40px;
-    background: #f8fafc;
-    border-radius: 20px 20px 0 0;
-  }
-}
-
-.header-top {
+// Header simplificado
+.page-header {
+  padding: 20px 24px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  position: relative;
-  z-index: 1;
+  margin-bottom: 24px;
 
   h1 {
     font-size: 24px;
@@ -36,25 +19,26 @@
     margin: 0;
     text-align: center;
     flex: 1;
+    color: var(--text-primary);
   }
 }
 
 .back-btn {
   width: 44px;
   height: 44px;
-  background: rgba(255, 255, 255, 0.2);
-  border: none;
+  background: var(--background-secondary);
+  border: 1px solid var(--border-color);
   border-radius: 12px;
-  color: white;
+  color: var(--text-secondary);
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
   transition: all 0.3s ease;
-  backdrop-filter: blur(10px);
 
   &:hover {
-    background: rgba(255, 255, 255, 0.3);
+    background: var(--hover-bg);
+    color: var(--primary-color);
     transform: scale(1.05);
   }
 
@@ -66,9 +50,6 @@
 // Conteúdo
 .content {
   padding: 0 24px;
-  // margin-top: -20px;
-  position: relative;
-  z-index: 2;
 }
 
 // Seletor de tipo
@@ -79,11 +60,11 @@
 .type-buttons {
   display: flex;
   gap: 16px;
-  background: white;
+  background: var(--background-secondary);
   padding: 8px;
   border-radius: 16px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-  border: 1px solid #f1f5f9;
+  box-shadow: var(--card-shadow);
+  border: 1px solid var(--border-color);
 }
 
 .type-btn {
@@ -98,10 +79,10 @@
   border-radius: 12px;
   cursor: pointer;
   transition: all 0.3s ease;
-  color: #64748b;
+  color: var(--text-secondary);
 
   &.active {
-    background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+    background: var(--primary-gradient);
     color: white;
     transform: scale(1.02);
   }
@@ -118,11 +99,11 @@
 
 // Formulário
 .transaction-form {
-  background: white;
+  background: var(--background-secondary);
   border-radius: 20px;
   padding: 24px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-  border: 1px solid #f1f5f9;
+  box-shadow: var(--card-shadow);
+  border: 1px solid var(--border-color);
 }
 
 .form-group {
@@ -136,7 +117,7 @@
     display: block;
     font-size: 16px;
     font-weight: 600;
-    color: #0f172a;
+    color: var(--text-primary);
     margin-bottom: 12px;
   }
 }
@@ -152,7 +133,7 @@
   left: 16px;
   font-size: 18px;
   font-weight: 600;
-  color: #64748b;
+  color: var(--text-secondary);
   z-index: 1;
 }
 
@@ -161,21 +142,22 @@ input[type="text"],
 input[type="date"] {
   width: 100%;
   padding: 16px;
-  border: 2px solid #e2e8f0;
+  border: 2px solid var(--border-color);
   border-radius: 12px;
   font-size: 16px;
-  background: #f8fafc;
+  background: var(--background-tertiary);
+  color: var(--text-primary);
   transition: all 0.3s ease;
 
   &:focus {
     outline: none;
-    border-color: #3b82f6;
-    background: white;
-    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+    border-color: var(--primary-color);
+    background: var(--background-secondary);
+    box-shadow: 0 0 0 3px var(--primary-bg);
   }
 
   &::placeholder {
-    color: #94a3b8;
+    color: var(--text-tertiary);
   }
 }
 
@@ -199,28 +181,28 @@ input[type="number"] {
   align-items: center;
   gap: 8px;
   padding: 16px 8px;
-  background: #f8fafc;
+  background: var(--background-tertiary);
   border: 2px solid transparent;
   border-radius: 16px;
   cursor: pointer;
   transition: all 0.3s ease;
 
   &:hover {
-    background: #f1f5f9;
+    background: var(--hover-bg);
     transform: translateY(-2px);
   }
 
   &.selected {
-    background: white;
-    border-color: #3b82f6;
-    box-shadow: 0 4px 16px rgba(59, 130, 246, 0.2);
+    background: var(--background-secondary);
+    border-color: var(--primary-color);
+    box-shadow: 0 4px 16px var(--primary-bg);
     transform: translateY(-2px);
   }
 
   span {
     font-size: 12px;
     font-weight: 600;
-    color: #64748b;
+    color: var(--text-secondary);
     text-align: center;
     line-height: 1.2;
   }
@@ -246,27 +228,28 @@ input[type="number"] {
 
   span {
     font-size: 14px;
-    color: #ef4444;
+    color: var(--error-color);
     font-weight: 500;
   }
 }
 
 .error-message {
-  background: #fee2e2;
-  color: #dc2626;
+  background: color-mix(in srgb, var(--error-color) 15%, transparent);
+  color: var(--error-color);
   padding: 12px 16px;
   border-radius: 12px;
   margin-bottom: 20px;
   font-size: 14px;
   font-weight: 500;
   text-align: center;
+  border: 1px solid color-mix(in srgb, var(--error-color) 30%, transparent);
 }
 
 // Botão de submit
 .submit-btn {
   width: 100%;
   height: 56px;
-  background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+  background: var(--primary-gradient);
   border: none;
   border-radius: 16px;
   color: white;
@@ -313,8 +296,8 @@ input[type="number"] {
 
 // Responsividade
 @media (max-width: 480px) {
-  .modern-header {
-    padding: 16px 20px 32px;
+  .page-header {
+    padding: 16px 20px;
 
     h1 {
       font-size: 20px;

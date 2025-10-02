@@ -1,7 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import { Firestore, collection, addDoc, query, where, orderBy, getDocs, doc, updateDoc, deleteDoc, Timestamp, collectionData, CollectionReference } from '@angular/fire/firestore';
 import { AuthService } from './auth.service';
-import { Observable, from, map, switchMap } from 'rxjs';
+import { Observable, from, map, switchMap, of, startWith, catchError } from 'rxjs';
 import { Transaction, Category, MonthlyAnalysis, CategoryBreakdown } from '../models/transaction.model';
 
 @Injectable({
@@ -52,7 +52,9 @@ export class TransactionService {
   getUserTransactions(): Observable<Transaction[]> {
     return this.authService.user$.pipe(
       switchMap(user => {
-        if (!user) return from([]);
+        if (!user) {
+          return from(Promise.resolve([])); // Retorna array vazio imediatamente
+        }
 
         const q = query(
           collection(this.firestore, 'transactions'),
@@ -61,15 +63,18 @@ export class TransactionService {
         );
 
         return from(getDocs(q)).pipe(
-          map(snapshot =>
-            snapshot.docs.map(doc => ({
+          map(snapshot => {
+            if (snapshot.empty) {
+              return []; // Retorna array vazio quando não há documentos
+            }
+            return snapshot.docs.map(doc => ({
               id: doc.id,
               ...doc.data(),
               date: doc.data()['date'].toDate(),
               createdAt: doc.data()['createdAt'].toDate(),
               updatedAt: doc.data()['updatedAt'].toDate()
-            } as Transaction))
-          )
+            } as Transaction));
+          })
         );
       })
     );
@@ -107,7 +112,9 @@ export class TransactionService {
             return transactionDate >= startOfMonth && transactionDate <= endOfMonth;
           })
           .sort((a, b) => b.date.getTime() - a.date.getTime());
-      })
+      }),
+      startWith([]), // Emite array vazio imediatamente
+      catchError(() => of([])) // Em caso de erro, retorna array vazio
     );
   }
 
@@ -192,6 +199,10 @@ export class TransactionService {
   getCurrentBalance(): Observable<number> {
     return this.getUserTransactions().pipe(
       map(transactions => {
+        if (!transactions || transactions.length === 0) {
+          return 0; // Retorna 0 explicitamente quando não há transações
+        }
+        
         const totalIncome = transactions
           .filter(t => t.type === 'income')
           .reduce((sum, t) => sum + t.amount, 0);
@@ -201,13 +212,17 @@ export class TransactionService {
           .reduce((sum, t) => sum + t.amount, 0);
 
         return totalIncome - totalExpense;
-      })
+      }),
+      startWith(0), // Emite 0 imediatamente
+      catchError(() => of(0)) // Em caso de erro, retorna 0
     );
   }
 
   getRecentTransactions(limit: number = 5): Observable<Transaction[]> {
     return this.getUserTransactions().pipe(
-      map(transactions => transactions.slice(0, limit))
+      map(transactions => transactions.slice(0, limit)),
+      startWith([]), // Emite array vazio imediatamente
+      catchError(() => of([])) // Em caso de erro, retorna array vazio
     );
   }
 }
