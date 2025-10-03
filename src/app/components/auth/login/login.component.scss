@@ -1,17 +1,22 @@
 .login-container {
   min-height: 100vh;
+  min-height: -webkit-fill-available;
   background: var(--background-primary);
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 40px 20px;
+  padding-top: max(40px, env(safe-area-inset-top) + 20px);
+  padding-bottom: max(40px, env(safe-area-inset-bottom) + 20px);
+  padding-left: max(20px, env(safe-area-inset-left) + 20px);
+  padding-right: max(20px, env(safe-area-inset-right) + 20px);
   position: relative;
   overflow: hidden;
 }
 
 .floating-logo {
   position: absolute;
-  top: 40px;
+  top: max(40px, env(safe-area-inset-top) + 40px);
   left: 50%;
   transform: translateX(-50%);
   z-index: 10;
@@ -308,10 +313,14 @@
 @media (max-width: 768px) {
   .login-container {
     padding: 20px 16px;
+    padding-top: max(20px, env(safe-area-inset-top) + 10px);
+    padding-bottom: max(20px, env(safe-area-inset-bottom) + 10px);
+    padding-left: max(16px, env(safe-area-inset-left) + 16px);
+    padding-right: max(16px, env(safe-area-inset-right) + 16px);
   }
 
   .floating-logo {
-    top: 30px;
+    top: max(30px, env(safe-area-inset-top) + 30px);
   }
 
   .logo-icon {
