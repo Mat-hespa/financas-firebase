@@ -1,11 +1,7 @@
 <div class="analytics-container">
   <!-- Header simplificado -->
   <header class="page-header">
-    <button class="back-btn" (click)="goBack()">
-      <span class="material-icons">arrow_back</span>
-    </button>
     <h1>Relatórios</h1>
-    <div></div> <!-- Placeholder para centralizar -->
   </header>
 
   <!-- Seletor de mês moderno -->
@@ -26,51 +22,91 @@
     </div>
   </section>
 
-  <!-- Loading -->
-  <div *ngIf="isLoading" class="loading-container">
-    <div class="spinner material-icons">refresh</div>
-    <p>Carregando análise...</p>
-  </div>
-
   <!-- Conteúdo -->
-  <div *ngIf="!isLoading" class="content">
-    <!-- Resumo geral -->
-    <section class="summary-overview" *ngIf="monthlyData">
+  <div class="content">
+    <!-- Resumo geral - sempre visível -->
+    <section class="summary-overview">
+      <!-- Cards com skeleton ou dados reais -->
       <div class="summary-cards">
-        <div class="summary-card income">
-          <div class="card-icon">
-            <span class="material-icons">trending_up</span>
+        <!-- Card Receitas -->
+        <ng-container *ngIf="!isLoading && dataReady && monthlyData; else receiptaSkeleton">
+          <div class="summary-card income">
+            <div class="card-icon">
+              <span class="material-icons">trending_up</span>
+            </div>
+            <div class="card-content">
+              <span class="card-label">Total de Receitas</span>
+              <span class="card-amount">{{ monthlyData.totalIncome | currency:'BRL':'symbol':'1.2-2':'pt' }}</span>
+            </div>
           </div>
-          <div class="card-content">
-            <span class="card-label">Total de Receitas</span>
-            <span class="card-amount">{{ monthlyData.totalIncome | currency:'BRL':'symbol':'1.2-2':'pt' }}</span>
+        </ng-container>
+        <ng-template #receiptaSkeleton>
+          <div class="summary-card-skeleton">
+            <div class="card-icon-skeleton"></div>
+            <div class="card-content-skeleton">
+              <div class="card-label-skeleton"></div>
+              <div class="card-amount-skeleton"></div>
+            </div>
           </div>
-        </div>
+        </ng-template>
 
-        <div class="summary-card expense">
-          <div class="card-icon">
-            <span class="material-icons">trending_down</span>
+        <!-- Card Gastos -->
+        <ng-container *ngIf="!isLoading && dataReady && monthlyData; else gastosSkeleton">
+          <div class="summary-card expense">
+            <div class="card-icon">
+              <span class="material-icons">trending_down</span>
+            </div>
+            <div class="card-content">
+              <span class="card-label">Total de Gastos</span>
+              <span class="card-amount">{{ monthlyData.totalExpense | currency:'BRL':'symbol':'1.2-2':'pt' }}</span>
+            </div>
           </div>
-          <div class="card-content">
-            <span class="card-label">Total de Gastos</span>
-            <span class="card-amount">{{ monthlyData.totalExpense | currency:'BRL':'symbol':'1.2-2':'pt' }}</span>
+        </ng-container>
+        <ng-template #gastosSkeleton>
+          <div class="summary-card-skeleton">
+            <div class="card-icon-skeleton"></div>
+            <div class="card-content-skeleton">
+              <div class="card-label-skeleton"></div>
+              <div class="card-amount-skeleton"></div>
+            </div>
           </div>
-        </div>
+        </ng-template>
 
-        <div class="summary-card balance" [class.positive]="monthlyData.balance >= 0" [class.negative]="monthlyData.balance < 0">
-          <div class="card-icon">
-            <span class="material-icons">{{ monthlyData.balance >= 0 ? 'savings' : 'money_off' }}</span>
+        <!-- Card Saldo -->
+                <!-- Card Saldo -->
+        <ng-container *ngIf="!isLoading && dataReady && monthlyData; else saldoSkeleton">
+          <div class="summary-card balance" [class.positive]="monthlyData.balance >= 0" [class.negative]="monthlyData.balance < 0">
+            <div class="card-icon">
+              <span class="material-icons">{{ monthlyData.balance >= 0 ? 'savings' : 'money_off' }}</span>
+            </div>
+            <div class="card-content">
+              <span class="card-label">Saldo do Mês</span>
+              <span class="card-amount">{{ monthlyData.balance | currency:'BRL':'symbol':'1.2-2':'pt' }}</span>
+            </div>
           </div>
-          <div class="card-content">
-            <span class="card-label">Saldo do Mês</span>
-            <span class="card-amount">{{ monthlyData.balance | currency:'BRL':'symbol':'1.2-2':'pt' }}</span>
+        </ng-container>
+        <ng-template #saldoSkeleton>
+          <div class="summary-card-skeleton">
+            <div class="card-icon-skeleton"></div>
+            <div class="card-content-skeleton">
+              <div class="card-label-skeleton"></div>
+              <div class="card-amount-skeleton"></div>
+            </div>
           </div>
-        </div>
+        </ng-template>
       </div>
     </section>
 
+    <!-- Loading para análises condicionais -->
+    <div *ngIf="isLoadingAnalysis" class="conditional-loading">
+      <div class="loading-message">
+        <div class="spinner material-icons">analytics</div>
+        <p>Analisando transações...</p>
+      </div>
+    </div>
+
     <!-- Gráfico de pizza -->
-    <section class="chart-section" *ngIf="expensesByCategory && expensesByCategory.length > 0">
+    <section class="chart-section" *ngIf="!isLoadingAnalysis && expensesByCategory && expensesByCategory.length > 0">
       <div class="section-header">
         <h3>Distribuição de Gastos</h3>
         <span class="total-expenses">Total: {{ monthlyData?.totalExpense | currency:'BRL':'symbol':'1.2-2':'pt' }}</span>
@@ -83,13 +119,12 @@
                class="pie-segment">
               <path [attr.d]="segment.path"
                     [attr.fill]="segment.color"
-                    [attr.stroke]="'#ffffff'"
-                    [attr.stroke-width]="'2'">
+                    class="pie-segment-path">
               </path>
             </g>
 
             <!-- Centro do gráfico -->
-            <circle cx="100" cy="100" r="40" fill="#ffffff" stroke="#e5e7eb" stroke-width="2"></circle>
+            <circle cx="100" cy="100" r="40" class="chart-center-circle"></circle>
             <text x="100" y="95" text-anchor="middle" class="chart-center-label">Gastos</text>
             <text x="100" y="110" text-anchor="middle" class="chart-center-value">{{ expensesByCategory.length }}</text>
             <text x="100" y="120" text-anchor="middle" class="chart-center-subtitle">categorias</text>
@@ -108,7 +143,7 @@
     </section>
 
     <!-- Análise detalhada por categoria -->
-    <section class="category-analysis" *ngIf="expensesByCategory && expensesByCategory.length > 0">
+    <section class="category-analysis" *ngIf="!isLoadingAnalysis && expensesByCategory && expensesByCategory.length > 0">
       <div class="section-header">
         <h3>Análise por Categoria</h3>
       </div>
@@ -161,7 +196,7 @@
     </section>
 
     <!-- Insights e dicas -->
-    <section class="insights-section" *ngIf="monthlyData">
+    <section class="insights-section" *ngIf="!isLoadingAnalysis && monthlyData">
       <div class="section-header">
         <h3>Insights do Mês</h3>
       </div>
@@ -198,18 +233,18 @@
         </div>
       </div>
     </section>
-  </div>
 
-  <!-- Estado vazio -->
-  <div class="empty-state" *ngIf="!isLoading && (!monthlyData || (!monthlyData.totalIncome && !monthlyData.totalExpense))">
-    <div class="empty-icon">
-      <span class="material-icons">assessment</span>
+    <!-- Estado vazio -->
+    <div class="empty-state" *ngIf="!isLoading && !isLoadingAnalysis && (!monthlyData || (!monthlyData.totalIncome && !monthlyData.totalExpense))">
+      <div class="empty-icon">
+        <span class="material-icons">assessment</span>
+      </div>
+      <h3>Nenhum dado encontrado</h3>
+      <p>Não há transações para este mês</p>
+      <button class="add-transaction-btn" (click)="addTransaction()">
+        <span class="material-icons">add</span>
+        Adicionar transação
+      </button>
     </div>
-    <h3>Nenhum dado encontrado</h3>
-    <p>Não há transações para este mês</p>
-    <button class="add-transaction-btn" (click)="addTransaction()">
-      <span class="material-icons">add</span>
-      Adicionar transação
-    </button>
   </div>
 </div>

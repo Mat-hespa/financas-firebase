@@ -47,6 +47,8 @@ export class MonthlyAnalysisComponent implements OnInit {
   topExpenseCategory: CategoryExpense | null = null;
   pieSegments: PieSegment[] = [];
   isLoading = true;
+  isLoadingAnalysis = false;
+  dataReady = false;
 
   months = [
     'Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho',
@@ -59,16 +61,39 @@ export class MonthlyAnalysisComponent implements OnInit {
 
   loadMonthlyAnalysis() {
     this.isLoading = true;
+    this.isLoadingAnalysis = true;
+    this.dataReady = false;
+    // Limpa dados anteriores
+    this.monthlyData = null;
+    this.expensesByCategory = [];
+    this.topExpenseCategory = null;
+    this.pieSegments = [];
+    
     this.transactionService.getMonthlyAnalysis(this.currentMonth, this.currentYear)
       .subscribe({
         next: (analysis) => {
           this.monthlyAnalysis = analysis;
+          
+          // Processa todos os dados primeiro
           this.processMonthlyData(analysis);
-          this.isLoading = false;
+          
+          // Marca dados como prontos
+          this.dataReady = true;
+          
+          // Pequeno delay para garantir que o DOM foi atualizado
+          setTimeout(() => {
+            this.isLoading = false;
+            // Depois remove o loading das análises condicionais
+            setTimeout(() => {
+              this.isLoadingAnalysis = false;
+            }, 100);
+          }, 150);
         },
         error: (error) => {
           console.error('Erro ao carregar análise:', error);
           this.isLoading = false;
+          this.isLoadingAnalysis = false;
+          this.dataReady = false;
         }
       });
   }
@@ -219,10 +244,6 @@ export class MonthlyAnalysisComponent implements OnInit {
   getBalanceIcon(): string {
     if (!this.monthlyAnalysis) return 'remove';
     return this.monthlyAnalysis.balance >= 0 ? 'trending_up' : 'trending_down';
-  }
-
-  goBack() {
-    this.router.navigate(['/dashboard']);
   }
 
   addTransaction() {

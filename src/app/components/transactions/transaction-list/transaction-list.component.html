@@ -1,0 +1,116 @@
+<div class="transaction-list-container">
+  <!-- Header -->
+  <header class="page-header">
+    <h1>Todas as Transações</h1>
+  </header>
+
+  <!-- Loading -->
+  <div *ngIf="isLoading" class="loading-container">
+    <!-- Skeleton para filtros -->
+    <section class="filters-section">
+      <div class="filter-buttons-skeleton">
+        <div class="filter-btn-skeleton" *ngFor="let item of [1,2,3]"></div>
+      </div>
+    </section>
+
+    <!-- Skeleton para header das transações -->
+    <section class="transactions-section">
+      <div class="transactions-header-skeleton">
+        <div class="transaction-count-skeleton"></div>
+      </div>
+
+      <!-- Skeleton para lista de transações -->
+      <div class="transactions-list-skeleton">
+        <div class="transaction-item-skeleton" *ngFor="let item of [1,2,3,4,5]">
+          <div class="transaction-icon-skeleton"></div>
+          <div class="transaction-info-skeleton">
+            <div class="transaction-description-skeleton"></div>
+            <div class="transaction-details-skeleton">
+              <div class="category-skeleton"></div>
+              <div class="date-skeleton"></div>
+            </div>
+          </div>
+          <div class="transaction-amount-skeleton"></div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- Conteúdo -->
+  <div *ngIf="!isLoading" class="content">
+    <!-- Filtros -->
+    <section class="filters-section">
+      <div class="filter-buttons">
+        <button class="filter-btn" 
+                [class.active]="selectedFilter === 'all'"
+                (click)="setFilter('all')">
+          <span class="material-icons">list</span>
+          Todas
+        </button>
+        <button class="filter-btn" 
+                [class.active]="selectedFilter === 'income'"
+                (click)="setFilter('income')">
+          <span class="material-icons">trending_up</span>
+          Receitas
+        </button>
+        <button class="filter-btn" 
+                [class.active]="selectedFilter === 'expense'"
+                (click)="setFilter('expense')">
+          <span class="material-icons">trending_down</span>
+          Gastos
+        </button>
+      </div>
+    </section>
+
+    <!-- Lista de transações -->
+    <section class="transactions-section" *ngIf="filteredTransactions$ | async as transactions">
+      <div class="transactions-header">
+        <h3>{{ transactions.length }} transação(ões) encontrada(s)</h3>
+        
+      </div>
+
+      <div class="transactions-list" *ngIf="transactions.length > 0; else noTransactions">
+        <div class="transaction-item" *ngFor="let transaction of transactions" 
+             [class.income]="transaction.type === 'income'"
+             [class.expense]="transaction.type === 'expense'">
+          
+          <div class="transaction-icon" [style.background-color]="getCategoryColor(transaction.category)">
+            <span class="material-icons">{{ getCategoryIcon(transaction.category) }}</span>
+          </div>
+
+          <div class="transaction-info">
+            <div class="transaction-description">{{ transaction.description }}</div>
+            <div class="transaction-details">
+              <span class="category">{{ getCategoryName(transaction.category) }}</span>
+              <span class="date">{{ formatDate(transaction.date) }}</span>
+            </div>
+          </div>
+
+          <div class="transaction-amount" [class.income]="transaction.type === 'income'"
+                                        [class.expense]="transaction.type === 'expense'">
+            <span class="amount-sign">{{ transaction.type === 'income' ? '+' : '-' }}</span>
+            <span class="amount-value">{{ transaction.amount | currency:'BRL':'symbol':'1.2-2':'pt' }}</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Mensagem quando não há transações -->
+      <ng-template #noTransactions>
+        <div class="empty-state">
+          <div class="empty-icon">
+            <span class="material-icons">receipt_long</span>
+          </div>
+          <h3>Nenhuma transação encontrada</h3>
+          <p>Você ainda não possui transações registradas.</p>
+          <button class="add-transaction-btn" (click)="addTransaction()">
+            <span class="material-icons">add</span>
+            Adicionar primeira transação
+          </button>
+        </div>
+      </ng-template>
+    </section>
+  </div>
+</div>
+
+<!-- Footer para navegação -->
+<app-footer></app-footer>

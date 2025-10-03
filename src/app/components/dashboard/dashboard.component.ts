@@ -163,4 +163,8 @@ export class DashboardComponent implements OnInit {
     // Considera um valor "grande" se tiver mais de 4 dígitos antes da vírgula
     return value >= 10000;
   }
+
+  viewAllTransactions() {
+    this.router.navigate(['/transactions']);
+  }
 }

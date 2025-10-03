@@ -40,16 +40,20 @@ export class LoginComponent {
   ) {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required, Validators.minLength(6)]]
+      password: ['', [Validators.required, Validators.minLength(6)]],
+      rememberMe: [false] // Novo campo para lembrar-me
     });
+
+    // Carregar dados salvos se existirem
+    this.loadSavedUserData();
   }
 
   async onSubmit() {
     if (this.loginForm.valid) {
       this.isLoading = true;
       try {
-        const { email, password } = this.loginForm.value;
-        await this.authService.login(email, password);
+        const { email, password, rememberMe } = this.loginForm.value;
+        await this.authService.login(email, password, rememberMe);
         this.router.navigate(['/dashboard']);
         this.snackBar.open('Login realizado com sucesso!', 'Fechar', {
           duration: 3000,
@@ -71,6 +75,19 @@ export class LoginComponent {
         });
       } finally {
         this.isLoading = false;
+      }
+    }
+  }
+
+  // Método para carregar dados salvos do usuário
+  private loadSavedUserData() {
+    if (this.authService.shouldRememberUser()) {
+      const savedEmail = this.authService.getSavedEmail();
+      if (savedEmail) {
+        this.loginForm.patchValue({
+          email: savedEmail,
+          rememberMe: true
+        });
       }
     }
   }

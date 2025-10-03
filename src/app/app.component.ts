@@ -17,7 +17,7 @@ export class AppComponent {
   private scrollService = inject(ScrollService); // Injeta o serviço de scroll para inicializá-lo
   private router = inject(Router);
   
-  private authenticatedRoutes = ['/dashboard', '/add-transaction', '/analytics'];
+  private authenticatedRoutes = ['/dashboard', '/add-transaction', '/analytics', '/transactions'];
   private currentRoute = '';
 
   constructor() {

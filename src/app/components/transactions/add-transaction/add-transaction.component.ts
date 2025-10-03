@@ -82,8 +82,4 @@ export class AddTransactionComponent {
       this.isLoading = false;
     }
   }
-
-  goBack() {
-    this.router.navigate(['/dashboard']);
-  }
 }

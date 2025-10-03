@@ -9,7 +9,7 @@
 .page-header {
   padding: 20px 24px;
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
   margin-bottom: 24px;
 
@@ -18,7 +18,6 @@
     font-weight: 700;
     margin: 0;
     text-align: center;
-    flex: 1;
     color: var(--text-primary);
   }
 }
@@ -166,6 +165,86 @@ input[type="number"] {
   text-align: right;
   font-weight: 600;
   font-size: 18px;
+}
+
+// Estilos específicos para input de data
+input[type="date"] {
+  text-align: center;
+  font-weight: 600;
+  
+  // Melhorias específicas para iOS
+  -webkit-appearance: none;
+  appearance: none;
+  position: relative;
+  
+  // Garantir que o input ocupe toda a largura disponível
+  width: 100%;
+  box-sizing: border-box;
+  
+  // Centralizar o texto no iOS
+  &::-webkit-datetime-edit {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    text-align: center;
+    padding: 0;
+  }
+  
+  // Estilizar os campos individuais
+  &::-webkit-datetime-edit-fields-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    padding: 0;
+  }
+  
+  &::-webkit-datetime-edit-text {
+    color: var(--text-secondary);
+    padding: 0 4px;
+  }
+  
+  &::-webkit-datetime-edit-month-field,
+  &::-webkit-datetime-edit-day-field,
+  &::-webkit-datetime-edit-year-field {
+    color: var(--text-primary);
+    text-align: center;
+    background: transparent;
+    border: none;
+    font-weight: 600;
+    outline: none;
+  }
+  
+  // Estilizar o ícone do calendário
+  &::-webkit-calendar-picker-indicator {
+    background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="%23666"><path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11zM7 10h5v5H7z"/></svg>') no-repeat center center;
+    background-size: 20px 20px;
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+    opacity: 0.7;
+    margin-left: 8px;
+    margin-right: 0;
+    flex-shrink: 0;
+    
+    &:hover {
+      opacity: 1;
+    }
+  }
+  
+  // Para navegadores que não suportam webkit
+  @supports not (-webkit-appearance: none) {
+    text-align: center;
+  }
+  
+  // Suporte específico para iOS Safari
+  @supports (-webkit-touch-callout: none) {
+    &::-webkit-datetime-edit {
+      justify-content: center;
+      text-align: center;
+    }
+  }
 }
 
 // Categorias
@@ -330,6 +409,25 @@ input[type="number"] {
 
     .material-icons {
       font-size: 18px;
+    }
+  }
+
+  // Melhorias específicas para input de data no mobile
+  input[type="date"] {
+    padding: 14px 16px;
+    font-size: 15px;
+    
+    &::-webkit-calendar-picker-indicator {
+      background-size: 18px 18px;
+      width: 18px;
+      height: 18px;
+      margin-left: 6px;
+    }
+    
+    &::-webkit-datetime-edit-month-field,
+    &::-webkit-datetime-edit-day-field,
+    &::-webkit-datetime-edit-year-field {
+      font-size: 15px;
     }
   }
 }
