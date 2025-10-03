@@ -5,7 +5,7 @@ import { AuthService } from '../../services/auth.service';
 import { TransactionService } from '../../services/transaction.service';
 import { Transaction } from '../../models/transaction.model';
 import { Observable, combineLatest } from 'rxjs';
-import { map, startWith, shareReplay } from 'rxjs/operators';
+import { map, startWith, shareReplay, delay, debounceTime } from 'rxjs/operators';
 
 @Component({
   selector: 'app-dashboard',
@@ -35,10 +35,12 @@ export class DashboardComponent implements OnInit {
 
   constructor() {
     this.currentBalance$ = this.transactionService.getCurrentBalance().pipe(
+      debounceTime(100), // Pequeno delay para evitar mudanças muito rápidas
       shareReplay(1)
     );
     
     this.recentTransactions$ = this.transactionService.getRecentTransactions(3).pipe(
+      debounceTime(100),
       shareReplay(1)
     );
 
@@ -46,6 +48,7 @@ export class DashboardComponent implements OnInit {
     const currentYear = new Date().getFullYear();
 
     this.monthlyTotals$ = this.transactionService.getMonthlyTransactions(currentMonth, currentYear).pipe(
+      debounceTime(100),
       map(transactions => {
         if (!transactions || transactions.length === 0) {
           return { income: 0, expense: 0 }; // Retorna valores 0 explicitamente
@@ -59,35 +62,37 @@ export class DashboardComponent implements OnInit {
     );
 
     // Subscrever aos observables para manter propriedades sincronizadas
-    this.currentBalance$.subscribe(balance => {
-      // Se não há dados (0), mostra skeleton por um tempo para dar feedback visual
-      const hasData = balance !== 0;
-      const delay = hasData ? 100 : 800;
-      
-      setTimeout(() => {
+    this.currentBalance$.subscribe({
+      next: (balance) => {
         this.currentBalance = balance;
         this.isLoadingBalance = false;
-      }, delay);
+      },
+      error: () => {
+        this.currentBalance = 0;
+        this.isLoadingBalance = false;
+      }
     });
 
-    this.monthlyTotals$.subscribe(totals => {
-      const hasData = totals.income !== 0 || totals.expense !== 0;
-      const delay = hasData ? 200 : 1000;
-      
-      setTimeout(() => {
+    this.monthlyTotals$.subscribe({
+      next: (totals) => {
         this.monthlyTotals = totals;
         this.isLoadingTotals = false;
-      }, delay);
+      },
+      error: () => {
+        this.monthlyTotals = { income: 0, expense: 0 };
+        this.isLoadingTotals = false;
+      }
     });
 
-    this.recentTransactions$.subscribe(transactions => {
-      const hasData = transactions.length > 0;
-      const delay = hasData ? 300 : 1200;
-      
-      setTimeout(() => {
+    this.recentTransactions$.subscribe({
+      next: (transactions) => {
         this.recentTransactions = transactions;
         this.isLoadingTransactions = false;
-      }, delay);
+      },
+      error: () => {
+        this.recentTransactions = [];
+        this.isLoadingTransactions = false;
+      }
     });
   }
 

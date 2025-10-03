@@ -3,6 +3,7 @@ import { Router, RouterOutlet, NavigationEnd } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { filter } from 'rxjs/operators';
 import { ThemeService } from './services/theme.service';
+import { ScrollService } from './services/scroll.service';
 import { FooterComponent } from './components/shared/footer/footer.component';
 
 @Component({
@@ -13,6 +14,7 @@ import { FooterComponent } from './components/shared/footer/footer.component';
 })
 export class AppComponent {
   private themeService = inject(ThemeService);
+  private scrollService = inject(ScrollService); // Injeta o serviço de scroll para inicializá-lo
   private router = inject(Router);
   
   private authenticatedRoutes = ['/dashboard', '/add-transaction', '/analytics'];

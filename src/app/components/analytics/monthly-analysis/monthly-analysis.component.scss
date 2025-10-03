@@ -132,6 +132,279 @@
     }
   }
 
+  // Skeletons
+  .summary-card-skeleton {
+    background: var(--background-secondary);
+    border-radius: 16px;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    box-shadow: var(--card-shadow);
+    border: 1px solid var(--border-color);
+
+    .card-icon-skeleton {
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      background: linear-gradient(90deg, var(--background-tertiary) 25%, var(--border-color) 50%, var(--background-tertiary) 75%);
+      background-size: 200% 100%;
+      animation: shimmer 1.5s infinite;
+    }
+
+    .card-content-skeleton {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+
+      .card-label-skeleton {
+        height: 14px;
+        width: 80%;
+        background: linear-gradient(90deg, var(--background-tertiary) 25%, var(--border-color) 50%, var(--background-tertiary) 75%);
+        background-size: 200% 100%;
+        border-radius: 4px;
+        animation: shimmer 1.5s infinite;
+      }
+
+      .card-amount-skeleton {
+        height: 20px;
+        width: 60%;
+        background: linear-gradient(90deg, var(--background-tertiary) 25%, var(--border-color) 50%, var(--background-tertiary) 75%);
+        background-size: 200% 100%;
+        border-radius: 4px;
+        animation: shimmer 1.5s infinite;
+      }
+    }
+  }
+
+  .section-title-skeleton {
+    height: 20px;
+    width: 150px;
+    background: linear-gradient(90deg, var(--background-tertiary) 25%, var(--border-color) 50%, var(--background-tertiary) 75%);
+    background-size: 200% 100%;
+    border-radius: 6px;
+    animation: shimmer 1.5s infinite;
+  }
+
+  .section-subtitle-skeleton {
+    height: 14px;
+    width: 100px;
+    background: linear-gradient(90deg, var(--background-tertiary) 25%, var(--border-color) 50%, var(--background-tertiary) 75%);
+    background-size: 200% 100%;
+    border-radius: 4px;
+    animation: shimmer 1.5s infinite;
+  }
+
+  .chart-skeleton {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 24px;
+
+    .pie-skeleton {
+      width: 200px;
+      height: 200px;
+      border-radius: 50%;
+      background: linear-gradient(90deg, var(--background-tertiary) 25%, var(--border-color) 50%, var(--background-tertiary) 75%);
+      background-size: 200% 100%;
+      animation: shimmer 1.5s infinite;
+    }
+
+    .legend-skeleton {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      width: 100%;
+
+      .legend-item-skeleton {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+
+        .legend-color-skeleton {
+          width: 16px;
+          height: 16px;
+          border-radius: 4px;
+          background: linear-gradient(90deg, var(--background-tertiary) 25%, var(--border-color) 50%, var(--background-tertiary) 75%);
+          background-size: 200% 100%;
+          animation: shimmer 1.5s infinite;
+        }
+
+        .legend-text-skeleton {
+          flex: 1;
+          height: 14px;
+          background: linear-gradient(90deg, var(--background-tertiary) 25%, var(--border-color) 50%, var(--background-tertiary) 75%);
+          background-size: 200% 100%;
+          border-radius: 4px;
+          animation: shimmer 1.5s infinite;
+        }
+      }
+    }
+  }
+
+  .top-category-skeleton {
+    margin-bottom: 16px;
+
+    .highlight-card-skeleton {
+      background: var(--background-secondary);
+      border-radius: 16px;
+      padding: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border: 1px solid var(--border-color);
+
+      .category-info-skeleton {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+
+        .category-icon-skeleton-large {
+          width: 48px;
+          height: 48px;
+          border-radius: 12px;
+          background: linear-gradient(90deg, var(--background-tertiary) 25%, var(--border-color) 50%, var(--background-tertiary) 75%);
+          background-size: 200% 100%;
+          animation: shimmer 1.5s infinite;
+        }
+
+        .category-details-skeleton {
+          display: flex;
+          flex-direction: column;
+          gap: 4px;
+
+          .category-title-skeleton {
+            height: 14px;
+            width: 80px;
+            background: linear-gradient(90deg, var(--background-tertiary) 25%, var(--border-color) 50%, var(--background-tertiary) 75%);
+            background-size: 200% 100%;
+            border-radius: 4px;
+            animation: shimmer 1.5s infinite;
+          }
+
+          .category-name-skeleton {
+            height: 18px;
+            width: 120px;
+            background: linear-gradient(90deg, var(--background-tertiary) 25%, var(--border-color) 50%, var(--background-tertiary) 75%);
+            background-size: 200% 100%;
+            border-radius: 4px;
+            animation: shimmer 1.5s infinite;
+          }
+
+          .category-amount-skeleton {
+            height: 16px;
+            width: 100px;
+            background: linear-gradient(90deg, var(--background-tertiary) 25%, var(--border-color) 50%, var(--background-tertiary) 75%);
+            background-size: 200% 100%;
+            border-radius: 4px;
+            animation: shimmer 1.5s infinite;
+          }
+        }
+      }
+
+      .percentage-badge-skeleton {
+        width: 60px;
+        height: 40px;
+        border-radius: 12px;
+        background: linear-gradient(90deg, var(--background-tertiary) 25%, var(--border-color) 50%, var(--background-tertiary) 75%);
+        background-size: 200% 100%;
+        animation: shimmer 1.5s infinite;
+      }
+    }
+  }
+
+  .category-item-skeleton {
+    background: var(--background-secondary);
+    border-radius: 16px;
+    padding: 16px;
+    box-shadow: var(--card-shadow);
+    border: 1px solid var(--border-color);
+
+    .category-header-skeleton {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 12px;
+
+      .category-icon-skeleton {
+        width: 40px;
+        height: 40px;
+        border-radius: 10px;
+        background: linear-gradient(90deg, var(--background-tertiary) 25%, var(--border-color) 50%, var(--background-tertiary) 75%);
+        background-size: 200% 100%;
+        animation: shimmer 1.5s infinite;
+      }
+
+      .category-info-skeleton {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+
+        .category-name-skeleton {
+          height: 16px;
+          width: 100px;
+          background: linear-gradient(90deg, var(--background-tertiary) 25%, var(--border-color) 50%, var(--background-tertiary) 75%);
+          background-size: 200% 100%;
+          border-radius: 4px;
+          animation: shimmer 1.5s infinite;
+        }
+
+        .transaction-count-skeleton {
+          height: 12px;
+          width: 80px;
+          background: linear-gradient(90deg, var(--background-tertiary) 25%, var(--border-color) 50%, var(--background-tertiary) 75%);
+          background-size: 200% 100%;
+          border-radius: 4px;
+          animation: shimmer 1.5s infinite;
+        }
+      }
+
+      .category-values-skeleton {
+        text-align: right;
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+
+        .percentage-skeleton {
+          height: 14px;
+          width: 40px;
+          background: linear-gradient(90deg, var(--background-tertiary) 25%, var(--border-color) 50%, var(--background-tertiary) 75%);
+          background-size: 200% 100%;
+          border-radius: 4px;
+          animation: shimmer 1.5s infinite;
+        }
+
+        .amount-skeleton {
+          height: 16px;
+          width: 80px;
+          background: linear-gradient(90deg, var(--background-tertiary) 25%, var(--border-color) 50%, var(--background-tertiary) 75%);
+          background-size: 200% 100%;
+          border-radius: 4px;
+          animation: shimmer 1.5s infinite;
+        }
+      }
+    }
+
+    .progress-bar-skeleton {
+      height: 6px;
+      background: linear-gradient(90deg, var(--background-tertiary) 25%, var(--border-color) 50%, var(--background-tertiary) 75%);
+      background-size: 200% 100%;
+      border-radius: 3px;
+      animation: shimmer 1.5s infinite;
+    }
+  }
+
+  @keyframes shimmer {
+    0% {
+      background-position: -200% 0;
+    }
+    100% {
+      background-position: 200% 0;
+    }
+  }
+
   .content {
     padding: 0 24px;
   }
@@ -603,6 +876,28 @@
 
     .content {
       padding: 0 20px;
+    }
+
+    // Ajustes nos skeletons para mobile
+    .summary-cards {
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .chart-skeleton {
+      .pie-skeleton {
+        width: 150px;
+        height: 150px;
+      }
+    }
+
+    .category-info-skeleton {
+      gap: 12px;
+
+      .category-icon-skeleton-large {
+        width: 40px;
+        height: 40px;
+      }
     }
   }
 }

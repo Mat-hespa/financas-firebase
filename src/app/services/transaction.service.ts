@@ -213,7 +213,6 @@ export class TransactionService {
 
         return totalIncome - totalExpense;
       }),
-      startWith(0), // Emite 0 imediatamente
       catchError(() => of(0)) // Em caso de erro, retorna 0
     );
   }
@@ -221,7 +220,6 @@ export class TransactionService {
   getRecentTransactions(limit: number = 5): Observable<Transaction[]> {
     return this.getUserTransactions().pipe(
       map(transactions => transactions.slice(0, limit)),
-      startWith([]), // Emite array vazio imediatamente
       catchError(() => of([])) // Em caso de erro, retorna array vazio
     );
   }
