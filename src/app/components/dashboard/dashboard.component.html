@@ -21,7 +21,7 @@
         </div>
       </div>
       <div class="balance-amount">
-        <h2 *ngIf="!isLoadingBalance; else loadingBalance" [class.hidden-value]="!isBalanceVisible">
+        <h2 *ngIf="!isLoadingBalance && dataReady; else loadingBalance" [class.hidden-value]="!isBalanceVisible">
           {{ isBalanceVisible ? (currentBalance | currency:'BRL':'symbol':'1.2-2':'pt') : getHiddenValue(currentBalance) }}
         </h2>
         <ng-template #loadingBalance>
@@ -48,7 +48,7 @@
         <div class="card-content">
           <span class="card-label">Receitas</span>
           <div class="card-amount-container">
-            <span class="card-amount" [class.hidden-value]="!isBalanceVisible" *ngIf="!isLoadingTotals; else loadingIncome">
+            <span class="card-amount" [class.hidden-value]="!isBalanceVisible" *ngIf="!isLoadingTotals && dataReady; else loadingIncome">
               {{ isBalanceVisible ? (monthlyTotals.income | currency:'BRL':'symbol':'1.2-2':'pt') : getHiddenValue(monthlyTotals.income) }}
             </span>
             <ng-template #loadingIncome>
@@ -68,7 +68,7 @@
         <div class="card-content">
           <span class="card-label">Gastos</span>
           <div class="card-amount-container">
-            <span class="card-amount" [class.hidden-value]="!isBalanceVisible" *ngIf="!isLoadingTotals; else loadingExpense">
+            <span class="card-amount" [class.hidden-value]="!isBalanceVisible" *ngIf="!isLoadingTotals && dataReady; else loadingExpense">
               {{ isBalanceVisible ? (monthlyTotals.expense | currency:'BRL':'symbol':'1.2-2':'pt') : getHiddenValue(monthlyTotals.expense) }}
             </span>
             <ng-template #loadingExpense>
@@ -111,7 +111,7 @@
 
     <div class="transactions-list">
       <!-- Loading skeleton para transações -->
-      <ng-container *ngIf="!isLoadingTransactions; else loadingTransactions">
+      <ng-container *ngIf="!isLoadingTransactions && dataReady; else loadingTransactions">
         <div class="transaction-item" *ngFor="let transaction of recentTransactions">
           <div class="transaction-icon" [class]="transaction.type">
             <span class="material-icons">{{ getCategoryIcon(transaction.category) }}</span>

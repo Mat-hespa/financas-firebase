@@ -125,6 +125,33 @@ html, body {
   animation: fadeIn 0.6s ease-out;
 }
 
+// Prevenção de flash de conteúdo não carregado
+.loading-content {
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  
+  &.loaded {
+    opacity: 1;
+  }
+}
+
+// Skeleton universal
+.skeleton-base {
+  background: linear-gradient(90deg, var(--background-tertiary) 25%, var(--border-color) 50%, var(--background-tertiary) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  border-radius: 4px;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
 // Utilitários
 .text-center {
   text-align: center;

@@ -23,6 +23,7 @@ export class TransactionListComponent implements OnInit {
   transactions$!: Observable<Transaction[]>;
   filteredTransactions$!: Observable<Transaction[]>;
   isLoading = true;
+  dataLoaded = false;
   
   selectedFilter: FilterType = 'all';
   private filterSubject = new BehaviorSubject<FilterType>('all');
@@ -33,6 +34,7 @@ export class TransactionListComponent implements OnInit {
 
   loadTransactions() {
     this.isLoading = true;
+    this.dataLoaded = false;
     this.transactions$ = this.transactionService.getUserTransactions();
     
     // Combinar transações com filtros
@@ -48,10 +50,21 @@ export class TransactionListComponent implements OnInit {
       })
     );
     
-    // Simular um pequeno delay para mostrar o skeleton
-    setTimeout(() => {
-      this.isLoading = false;
-    }, 800);
+    // Aguardar dados reais carregarem
+    this.transactions$.subscribe({
+      next: (transactions) => {
+        this.dataLoaded = true;
+        // Pequeno delay apenas para garantir que o DOM foi atualizado
+        setTimeout(() => {
+          this.isLoading = false;
+        }, 100);
+      },
+      error: (error) => {
+        console.error('Erro ao carregar transações:', error);
+        this.dataLoaded = true;
+        this.isLoading = false;
+      }
+    });
   }
 
   setFilter(filter: FilterType) {

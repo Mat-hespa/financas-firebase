@@ -4,21 +4,40 @@
     <h1>Relatórios</h1>
   </header>
 
-  <!-- Seletor de mês moderno -->
-  <section class="month-selector">
-    <div class="month-navigation">
-      <button class="nav-btn" (click)="previousMonth()">
-        <span class="material-icons">chevron_left</span>
-      </button>
-
-      <div class="month-display">
-        <h2>{{ getMonthName(currentMonth) }}</h2>
-        <span class="year">{{ currentYear }}</span>
+  <!-- Seletor de mês modernizado -->
+  <section class="month-selector-modern">
+    <div class="selector-container">
+      <div class="month-dropdown" [class.open]="isMonthDropdownOpen" (click)="toggleMonthDropdown()">
+        <div class="selected-month">
+          <div class="month-info">
+            <span class="month-name">{{ getMonthName(currentMonth) }}</span>
+            <span class="year-text">{{ currentYear }}</span>
+          </div>
+          <span class="material-icons dropdown-icon">{{ isMonthDropdownOpen ? 'expand_less' : 'expand_more' }}</span>
+        </div>
+        
+        <div class="dropdown-menu" *ngIf="isMonthDropdownOpen">
+          <div class="year-selector">
+            <button class="year-nav" (click)="changeYear(-1); $event.stopPropagation()">
+              <span class="material-icons">chevron_left</span>
+            </button>
+            <span class="current-year">{{ currentYear }}</span>
+            <button class="year-nav" (click)="changeYear(1); $event.stopPropagation()" [disabled]="currentYear >= getCurrentYear()">
+              <span class="material-icons">chevron_right</span>
+            </button>
+          </div>
+          
+          <div class="months-grid">
+            <button class="month-option" 
+                    *ngFor="let month of months; let i = index"
+                    [class.current]="i + 1 === currentMonth"
+                    [class.disabled]="isMonthDisabled(i + 1)"
+                    (click)="selectMonth(i + 1); $event.stopPropagation()">
+              {{ month.substring(0, 3) }}
+            </button>
+          </div>
+        </div>
       </div>
-
-      <button class="nav-btn" (click)="nextMonth()" [disabled]="isCurrentMonth()">
-        <span class="material-icons">chevron_right</span>
-      </button>
     </div>
   </section>
 
@@ -38,6 +57,7 @@
               <span class="card-label">Total de Receitas</span>
               <span class="card-amount">{{ monthlyData.totalIncome | currency:'BRL':'symbol':'1.2-2':'pt' }}</span>
             </div>
+            <div class="card-badge positive">+{{ getIncomeGrowthPercentage() }}%</div>
           </div>
         </ng-container>
         <ng-template #receiptaSkeleton>
@@ -60,6 +80,7 @@
               <span class="card-label">Total de Gastos</span>
               <span class="card-amount">{{ monthlyData.totalExpense | currency:'BRL':'symbol':'1.2-2':'pt' }}</span>
             </div>
+            <div class="card-badge negative">{{ getExpensePercentageOfIncome() }}%</div>
           </div>
         </ng-container>
         <ng-template #gastosSkeleton>
@@ -80,8 +101,11 @@
               <span class="material-icons">{{ monthlyData.balance >= 0 ? 'savings' : 'money_off' }}</span>
             </div>
             <div class="card-content">
-              <span class="card-label">Saldo do Mês</span>
+              <span class="card-label">{{ monthlyData.balance >= 0 ? 'Economia do Mês' : 'Déficit do Mês' }}</span>
               <span class="card-amount">{{ monthlyData.balance | currency:'BRL':'symbol':'1.2-2':'pt' }}</span>
+            </div>
+            <div class="card-badge" [class.positive]="monthlyData.balance >= 0" [class.negative]="monthlyData.balance < 0">
+              {{ getSavingsPercentage() }}%
             </div>
           </div>
         </ng-container>

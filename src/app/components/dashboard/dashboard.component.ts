@@ -32,6 +32,7 @@ export class DashboardComponent implements OnInit {
   isLoadingBalance: boolean = true;
   isLoadingTotals: boolean = true;
   isLoadingTransactions: boolean = true;
+  dataReady: boolean = false;
 
   constructor() {
     this.currentBalance$ = this.transactionService.getCurrentBalance().pipe(
@@ -66,10 +67,12 @@ export class DashboardComponent implements OnInit {
       next: (balance) => {
         this.currentBalance = balance;
         this.isLoadingBalance = false;
+        this.checkDataReady();
       },
       error: () => {
         this.currentBalance = 0;
         this.isLoadingBalance = false;
+        this.checkDataReady();
       }
     });
 
@@ -77,10 +80,12 @@ export class DashboardComponent implements OnInit {
       next: (totals) => {
         this.monthlyTotals = totals;
         this.isLoadingTotals = false;
+        this.checkDataReady();
       },
       error: () => {
         this.monthlyTotals = { income: 0, expense: 0 };
         this.isLoadingTotals = false;
+        this.checkDataReady();
       }
     });
 
@@ -88,12 +93,28 @@ export class DashboardComponent implements OnInit {
       next: (transactions) => {
         this.recentTransactions = transactions;
         this.isLoadingTransactions = false;
+        this.checkDataReady();
       },
       error: () => {
         this.recentTransactions = [];
         this.isLoadingTransactions = false;
+        this.checkDataReady();
       }
     });
+  }
+
+  private checkDataReady() {
+    // Só marca como pronto quando todos os dados foram carregados
+    if (!this.isLoadingBalance && !this.isLoadingTotals && !this.isLoadingTransactions) {
+      setTimeout(() => {
+        this.dataReady = true;
+      }, 100);
+    }
+  }
+
+  // Método para debug - pode ser removido depois
+  getLoadingState(): string {
+    return `Balance: ${this.isLoadingBalance}, Totals: ${this.isLoadingTotals}, Transactions: ${this.isLoadingTransactions}, Ready: ${this.dataReady}`;
   }
 
   ngOnInit() {
