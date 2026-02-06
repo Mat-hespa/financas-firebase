@@ -12,6 +12,8 @@ export class StatusBarService {
 
   constructor() {
     this.setupStatusBarListener();
+    // Força atualização inicial
+    setTimeout(() => this.updateStatusBarColor(), 0);
   }
 
   private setupStatusBarListener(): void {
@@ -19,11 +21,14 @@ export class StatusBarService {
     this.router.events.pipe(
       filter(event => event instanceof NavigationEnd)
     ).subscribe(() => {
-      this.updateStatusBarColor();
+      // Pequeno delay para garantir que o DOM foi renderizado
+      setTimeout(() => {
+        this.updateStatusBarColor();
+        // Força múltiplas tentativas para iOS
+        setTimeout(() => this.updateStatusBarColor(), 100);
+        setTimeout(() => this.updateStatusBarColor(), 300);
+      }, 0);
     });
-
-    // Também atualiza quando o tema muda
-    // Como o ThemeService usa signals, vamos usar effect para observar mudanças
   }
 
   updateStatusBarColor(): void {
@@ -32,12 +37,12 @@ export class StatusBarService {
     let color: string;
 
     // Define a cor baseado na rota e tema
-    if (currentRoute.includes('/dashboard')) {
-      // Dashboard: roxo do gradiente
-      color = isDark ? '#7c3aed' : '#6d28d9';
-    } else if (currentRoute.includes('/login') || currentRoute.includes('/register')) {
+    if (currentRoute === '/' || currentRoute.includes('/login') || currentRoute.includes('/register')) {
       // Login/Register: preto ou branco baseado no tema
       color = isDark ? '#000000' : '#ffffff';
+    } else if (currentRoute.includes('/dashboard')) {
+      // Dashboard: roxo do gradiente
+      color = isDark ? '#7c3aed' : '#6d28d9';
     } else if (currentRoute.includes('/transactions') || currentRoute.includes('/analytics')) {
       // Outras telas: cor de fundo secundária
       color = isDark ? '#0a0a0a' : '#f5f5f5';
@@ -50,14 +55,14 @@ export class StatusBarService {
   }
 
   private setMetaThemeColor(color: string): void {
-    let metaTag = document.querySelector('meta[name="theme-color"]');
+    // Remove todas as meta tags de theme-color existentes
+    const existingTags = document.querySelectorAll('meta[name="theme-color"]');
+    existingTags.forEach(tag => tag.remove());
     
-    if (!metaTag) {
-      metaTag = document.createElement('meta');
-      metaTag.setAttribute('name', 'theme-color');
-      document.head.appendChild(metaTag);
-    }
-    
+    // Cria uma nova meta tag
+    const metaTag = document.createElement('meta');
+    metaTag.setAttribute('name', 'theme-color');
     metaTag.setAttribute('content', color);
+    document.head.appendChild(metaTag);
   }
 }
