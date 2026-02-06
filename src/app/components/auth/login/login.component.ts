@@ -76,7 +76,8 @@ export class LoginComponent implements OnInit {
         // Verifica se deve mostrar dialog de biometria
         await this.checkAndShowBiometricSetup(email);
         
-        this.router.navigate(['/dashboard']);
+        await this.router.navigate(['/dashboard']);
+        setTimeout(() => window.scrollTo({ top: 0, behavior: 'instant' }), 100);
         
         this.snackBar.open('Login realizado com sucesso!', 'Fechar', {
           duration: 3000,
@@ -135,7 +136,9 @@ export class LoginComponent implements OnInit {
       
       if (result.success && !result.needsPassword) {
         // Login bem-sucedido - redireciona para dashboard
-        this.router.navigate(['/dashboard']);
+        await this.router.navigate(['/dashboard']);
+        // Garante que a página está no topo
+        setTimeout(() => window.scrollTo({ top: 0, behavior: 'instant' }), 100);
         this.snackBar.open('Login biométrico realizado! 🎉', 'Fechar', {
           duration: 2000,
           panelClass: ['success-snackbar']
@@ -169,7 +172,8 @@ export class LoginComponent implements OnInit {
           });
         } else {
           // Login completo com sucesso!
-          this.router.navigate(['/dashboard']);
+          await this.router.navigate(['/dashboard']);
+          setTimeout(() => window.scrollTo({ top: 0, behavior: 'instant' }), 100);
           this.snackBar.open('Login biométrico realizado com sucesso! 🎉', 'Fechar', {
             duration: 3000,
             panelClass: ['success-snackbar']
