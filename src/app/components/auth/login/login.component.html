@@ -1,5 +1,9 @@
 <div class="login-container">
-  <!-- Logo flutuante no topo -->
+  <!-- Botão de tema -->
+  <button class="theme-toggle-btn" (click)="toggleTheme()" [attr.aria-label]="isDarkMode() ? 'Ativar modo claro' : 'Ativar modo escuro'">
+    <span class="material-icons">{{ isDarkMode() ? 'light_mode' : 'dark_mode' }}</span>
+  </button>
+
   <!-- Conteúdo principal centralizado -->
   <div class="main-content">
     <div class="welcome-section">

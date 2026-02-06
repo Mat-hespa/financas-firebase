@@ -954,7 +954,7 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    padding: 60px 20px;
+    padding: 20px 20px;
     text-align: center;
 
     .empty-icon {
@@ -987,7 +987,7 @@
     }
 
     .add-transaction-btn {
-      background: linear-gradient(135deg, var(--success-color), #059669);
+      background: var(--primary-gradient);
       border: none;
       border-radius: 16px;
       padding: 12px 24px;
@@ -1002,7 +1002,7 @@
 
       &:hover {
         transform: translateY(-2px);
-        box-shadow: 0 8px 25px rgba(16, 185, 129, 0.3);
+        box-shadow: 0 8px 25px rgba(109, 40, 217, 0.3);
       }
 
       .material-icons {

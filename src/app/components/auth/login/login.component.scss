@@ -3,123 +3,117 @@
   min-height: -webkit-fill-available;
   background: var(--background-primary);
   display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 40px 20px;
-  padding-top: max(40px, env(safe-area-inset-top) + 20px);
-  padding-bottom: max(40px, env(safe-area-inset-bottom) + 20px);
-  padding-left: max(20px, env(safe-area-inset-left) + 20px);
-  padding-right: max(20px, env(safe-area-inset-right) + 20px);
+  flex-direction: column;
+  justify-content: flex-start;
+  padding: 0;
+  padding-top: env(safe-area-inset-top);
+  padding-bottom: env(safe-area-inset-bottom);
   position: relative;
-  overflow: hidden;
+  overflow-y: auto;
 }
 
-.floating-logo {
-  position: absolute;
-  top: max(40px, env(safe-area-inset-top) + 40px);
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 10;
-}
-
-.logo-icon {
-  width: 70px;
-  height: 70px;
-  background: var(--primary-gradient);
-  border-radius: 20px;
+// Botão de tema
+.theme-toggle-btn {
+  position: fixed;
+  top: max(20px, env(safe-area-inset-top) + 20px);
+  right: max(20px, env(safe-area-inset-right) + 20px);
+  z-index: 100;
+  background: var(--background-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  width: 48px;
+  height: 48px;
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 10px 40px rgba(59, 130, 246, 0.3);
+  cursor: pointer;
+  color: var(--text-primary);
   transition: all 0.3s ease;
+  box-shadow: var(--card-shadow);
 
   &:hover {
-    transform: translateY(-3px) scale(1.05);
-    box-shadow: 0 15px 50px rgba(59, 130, 246, 0.4);
+    background: var(--primary-color);
+    color: white;
+    transform: scale(1.05);
   }
 
   .material-icons {
-    font-size: 35px;
-    color: white;
+    font-size: 24px;
   }
 }
 
 .main-content {
   width: 100%;
-  max-width: 450px;
+  max-width: 100%;
+  background: transparent;
+  padding: 48px 24px 32px;
+  flex: 1;
   display: flex;
   flex-direction: column;
-  gap: 50px;
-  z-index: 5;
-  position: relative;
+  justify-content: space-between;
 }
 
 .welcome-section {
   text-align: center;
-  margin-top: 60px;
+  margin-bottom: 48px;
 }
 
 .app-title {
-  font-size: 42px;
-  font-weight: 800;
-  margin: 0 0 30px 0;
-  color: var(--text-primary);
-  letter-spacing: -1px;
+  font-size: 48px;
+  font-weight: 900;
+  margin: 0 0 16px 0;
   background: var(--primary-gradient);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+  letter-spacing: -2px;
 }
 
 .welcome-text {
-  margin-bottom: 20px;
-
   h2 {
-    font-size: 32px;
-    font-weight: 700;
-    color: var(--text-primary);
-    margin: 0 0 16px 0;
-    letter-spacing: -0.5px;
+    display: none;
   }
 
   p {
-    font-size: 18px;
+    font-size: 16px;
     color: var(--text-secondary);
     margin: 0;
     font-weight: 400;
-    line-height: 1.5;
+    line-height: 1.6;
+    max-width: 300px;
+    margin: 0 auto;
   }
 }
 
 .login-form {
   display: flex;
   flex-direction: column;
-  gap: 30px;
+  gap: 24px;
 }
 
 .input-group {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 10px;
 }
 
 .input-label {
-  font-size: 16px;
+  font-size: 15px;
   font-weight: 600;
   color: var(--text-primary);
-  margin-bottom: 8px;
+  margin-left: 4px;
 }
 
 .modern-input {
   width: 100%;
-  height: 64px;
+  height: 58px;
   border: 2px solid var(--border-color);
-  border-radius: 20px;
-  padding: 0 24px;
-  font-size: 18px;
+  border-radius: 14px;
+  padding: 0 20px;
+  font-size: 16px;
   color: var(--text-primary);
   background: var(--background-secondary);
-  transition: all 0.3s ease;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   font-family: inherit;
 
   &::placeholder {
@@ -131,13 +125,11 @@
     outline: none;
     border-color: var(--primary-color);
     box-shadow: 0 0 0 4px var(--primary-bg);
-    transform: translateY(-2px);
-    background: var(--background-primary);
   }
 
   &.error {
     border-color: var(--error-color);
-    box-shadow: 0 0 0 4px color-mix(in srgb, var(--error-color) 20%, transparent);
+    box-shadow: 0 0 0 4px color-mix(in srgb, var(--error-color) 10%, transparent);
   }
 }
 
@@ -341,15 +333,12 @@
 // Botão de login biométrico
 .biometric-button {
   width: 100%;
-  height: 64px;
-  background: linear-gradient(135deg, 
-    color-mix(in srgb, var(--primary-color) 10%, var(--background-secondary)),
-    color-mix(in srgb, var(--accent-color) 10%, var(--background-secondary))
-  );
+  height: 56px;
+  background: rgba(109, 40, 217, 0.08);
   border: 2px solid var(--primary-color);
-  border-radius: 20px;
+  border-radius: 14px;
   color: var(--primary-color);
-  font-size: 18px;
+  font-size: 17px;
   font-weight: 700;
   cursor: pointer;
   transition: all 0.3s ease;
@@ -357,35 +346,35 @@
   align-items: center;
   justify-content: center;
   gap: 12px;
-  margin-top: 16px;
+  margin-bottom: 16px;
 
   .material-icons {
-    font-size: 28px;
+    font-size: 26px;
   }
 
   &.primary {
     background: var(--primary-gradient);
     color: white;
     border: none;
-    box-shadow: 0 8px 30px rgba(59, 130, 246, 0.3);
-    margin-top: 0;
-    margin-bottom: 8px;
+    box-shadow: 0 4px 20px rgba(109, 40, 217, 0.25);
+    margin-bottom: 0;
     
     &:hover:not(:disabled) {
-      transform: translateY(-3px);
-      box-shadow: 0 15px 40px rgba(59, 130, 246, 0.5);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 30px rgba(109, 40, 217, 0.35);
     }
   }
 
   &:hover:not(:disabled) {
     background: var(--primary-gradient);
     color: white;
-    transform: translateY(-3px);
-    box-shadow: 0 15px 40px rgba(59, 130, 246, 0.4);
+    border-color: transparent;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 20px rgba(109, 40, 217, 0.25);
   }
 
   &:active:not(:disabled) {
-    transform: translateY(-1px);
+    transform: translateY(0);
   }
 
   &:disabled {
@@ -399,7 +388,7 @@
   display: flex;
   align-items: center;
   text-align: center;
-  margin: 20px 0;
+  margin: 24px 0;
   color: var(--text-tertiary);
 
   &::before,
@@ -411,20 +400,20 @@
 
   span {
     padding: 0 16px;
-    font-size: 14px;
+    font-size: 13px;
     font-weight: 500;
-    text-transform: uppercase;
+    text-transform: lowercase;
   }
 }
 
 .primary-button {
   width: 100%;
-  height: 64px;
+  height: 56px;
   background: var(--primary-gradient);
   border: none;
-  border-radius: 20px;
+  border-radius: 14px;
   color: white;
-  font-size: 18px;
+  font-size: 17px;
   font-weight: 700;
   cursor: pointer;
   transition: all 0.3s ease;
@@ -432,16 +421,16 @@
   align-items: center;
   justify-content: center;
   gap: 12px;
-  margin-top: 20px;
-  box-shadow: 0 8px 30px rgba(59, 130, 246, 0.3);
+  margin-top: 8px;
+  box-shadow: 0 4px 20px rgba(109, 40, 217, 0.25);
 
   &:hover:not(:disabled) {
-    transform: translateY(-3px);
-    box-shadow: 0 15px 40px rgba(59, 130, 246, 0.4);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 30px rgba(109, 40, 217, 0.35);
   }
 
   &:active:not(:disabled) {
-    transform: translateY(-1px);
+    transform: translateY(0);
   }
 
   &:disabled {
@@ -469,32 +458,33 @@
 
 .footer-section {
   text-align: center;
-  margin-top: 40px;
+  margin-top: auto;
+  padding-top: 32px;
 }
 
 .signup-text {
-  font-size: 16px;
+  font-size: 15px;
   color: var(--text-secondary);
-  margin: 0 0 20px 0;
+  margin: 0 0 16px 0;
 }
 
 .link-button {
   display: inline-block;
-  padding: 16px 32px;
+  padding: 14px 28px;
   background: transparent;
   border: 2px solid var(--primary-color);
-  border-radius: 16px;
+  border-radius: 12px;
   color: var(--primary-color);
   text-decoration: none;
   font-weight: 600;
-  font-size: 16px;
+  font-size: 15px;
   transition: all 0.3s ease;
 
   &:hover {
     background: var(--primary-color);
     color: white;
     transform: translateY(-2px);
-    box-shadow: 0 8px 25px rgba(59, 130, 246, 0.3);
+    box-shadow: 0 4px 20px rgba(109, 40, 217, 0.25);
   }
 }
 
@@ -505,58 +495,6 @@
     border-radius: 24px;
     box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
     backdrop-filter: blur(10px);
-  }
-}
-
-// Decoração de fundo
-.background-decoration {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-  z-index: 1;
-}
-
-.decoration-circle {
-  position: absolute;
-  border-radius: 50%;
-  background: var(--primary-gradient);
-  opacity: 0.05;
-  animation: float 3s ease-in-out infinite;
-
-  &.circle-1 {
-    width: 200px;
-    height: 200px;
-    top: 10%;
-    right: 10%;
-    animation-delay: 0s;
-  }
-
-  &.circle-2 {
-    width: 150px;
-    height: 150px;
-    bottom: 20%;
-    left: 15%;
-    animation-delay: 1s;
-  }
-
-  &.circle-3 {
-    width: 100px;
-    height: 100px;
-    top: 50%;
-    right: 20%;
-    animation-delay: 2s;
-  }
-}
-
-@keyframes float {
-  0%, 100% {
-    transform: translateY(0px) scale(1);
-  }
-  50% {
-    transform: translateY(-20px) scale(1.1);
   }
 }
 

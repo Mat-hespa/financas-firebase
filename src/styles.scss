@@ -2,59 +2,63 @@
 
 // Variáveis CSS para Dark Mode
 :root {
-  // Cores Light Mode (padrão)
-  --primary-color: #2563eb;
-  --primary-gradient: linear-gradient(135deg, #2563eb 0%, #3b82f6 100%);
-  --primary-bg: rgba(37, 99, 235, 0.1);
+  // Cores Light Mode - Tema Moderno Roxo Escuro
+  --primary-color: #6d28d9;
+  --primary-gradient: linear-gradient(135deg, #5b21b6 0%, #7c3aed 50%, #8b5cf6 100%);
+  --primary-bg: rgba(109, 40, 217, 0.1);
   
-  --background-primary: #fafbfc;
-  --background-secondary: #ffffff;
-  --background-tertiary: #f8fafc;
+  --background-primary: #ffffff;
+  --background-secondary: #fafafa;
+  --background-tertiary: #f5f5f7;
   
-  --text-primary: #1f2937;
+  --text-primary: #1a1a1a;
   --text-secondary: #6b7280;
   --text-tertiary: #9ca3af;
   
   --border-color: #e5e7eb;
-  --hover-bg: rgba(0, 0, 0, 0.05);
+  --hover-bg: rgba(109, 40, 217, 0.05);
   
-  --footer-bg: rgba(255, 255, 255, 0.9);
+  --footer-bg: rgba(255, 255, 255, 0.95);
   
   --success-color: #10b981;
+  --success-gradient: linear-gradient(135deg, #10b981 0%, #34d399 100%);
   --error-color: #ef4444;
+  --error-gradient: linear-gradient(135deg, #ef4444 0%, #f87171 100%);
   --warning-color: #f59e0b;
-  --info-color: #3b82f6;
+  --info-color: #6d28d9;
   
-  --card-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-  --card-shadow-hover: 0 4px 12px rgba(0, 0, 0, 0.15);
+  --card-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  --card-shadow-hover: 0 8px 30px rgba(109, 40, 217, 0.15);
 }
 
 // Dark Mode
 .dark {
-  --primary-color: #3b82f6;
-  --primary-gradient: linear-gradient(135deg, #3b82f6 0%, #60a5fa 100%);
-  --primary-bg: rgba(59, 130, 246, 0.15);
+  --primary-color: #7c3aed;
+  --primary-gradient: linear-gradient(135deg, #6d28d9 0%, #7c3aed 50%, #8b5cf6 100%);
+  --primary-bg: rgba(124, 58, 237, 0.15);
   
-  --background-primary: #0f172a;
-  --background-secondary: #1e293b;
-  --background-tertiary: #334155;
+  --background-primary: #0a0a0a;
+  --background-secondary: #1a1a1a;
+  --background-tertiary: #2a2a2a;
   
-  --text-primary: #f1f5f9;
-  --text-secondary: #cbd5e1;
-  --text-tertiary: #94a3b8;
+  --text-primary: #ffffff;
+  --text-secondary: #a0a0a0;
+  --text-tertiary: #737373;
   
-  --border-color: #334155;
-  --hover-bg: rgba(255, 255, 255, 0.1);
+  --border-color: #2a2a2a;
+  --hover-bg: rgba(124, 58, 237, 0.1);
   
-  --footer-bg: rgba(30, 41, 59, 0.9);
+  --footer-bg: rgba(26, 26, 26, 0.95);
   
   --success-color: #22c55e;
+  --success-gradient: linear-gradient(135deg, #22c55e 0%, #4ade80 100%);
   --error-color: #f87171;
+  --error-gradient: linear-gradient(135deg, #f87171 0%, #fca5a5 100%);
   --warning-color: #fbbf24;
-  --info-color: #60a5fa;
+  --info-color: #7c3aed;
   
-  --card-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
-  --card-shadow-hover: 0 4px 12px rgba(0, 0, 0, 0.4);
+  --card-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+  --card-shadow-hover: 0 8px 30px rgba(124, 58, 237, 0.3);
 }
 
 // Reset e estilos globais
@@ -213,4 +217,22 @@ app-root {
   .material-icons {
     font-size: 20px;
   }
+}
+
+// Estilos globais para Material Dialog
+.mat-mdc-dialog-container {
+  --mdc-dialog-container-color: transparent !important;
+  box-shadow: none !important;
+  background: transparent !important;
+  padding: 0 !important;
+  
+  .mdc-dialog__surface {
+    background: transparent !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+  }
+}
+
+.cdk-overlay-pane {
+  max-width: 95vw !important;
 }

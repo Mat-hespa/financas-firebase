@@ -1,56 +1,62 @@
 .dashboard-container {
   min-height: 100vh;
   background: var(--background-primary);
-  padding: 20px 0;
+  padding: 0;
   transition: background-color 0.3s ease;
 }
 
-// Seção do saldo com greeting
+// Seção do saldo com greeting e gradiente no topo
 .balance-section {
-  padding: 20px 24px 24px;
+  background: var(--primary-gradient);
+  padding: 32px 24px 40px;
+  border-radius: 0 0 32px 32px;
+  box-shadow: 0 10px 40px rgba(124, 58, 237, 0.2);
   
   .user-greeting {
-    margin-bottom: 24px;
+    margin-bottom: 32px;
     
     .greeting-content {
       h1 {
-        font-size: 28px;
-        font-weight: 700;
-        margin: 0 0 4px 0;
-        color: var(--text-primary);
-        letter-spacing: -0.5px;
+        font-size: 32px;
+        font-weight: 800;
+        margin: 0 0 8px 0;
+        color: #ffffff;
+        letter-spacing: -0.8px;
       }
       
       p {
         font-size: 16px;
-        color: var(--text-secondary);
+        color: rgba(255, 255, 255, 0.85);
         margin: 0;
-        font-weight: 400;
+        font-weight: 500;
       }
     }
   }
 }
 
 .balance-card {
-  background: var(--background-secondary);
-  border-radius: 20px;
-  padding: 24px;
-  box-shadow: var(--card-shadow);
-  border: 1px solid var(--border-color);
-  transition: background-color 0.3s ease, border-color 0.3s ease;
+  background: rgba(255, 255, 255, 0.25);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-radius: 24px;
+  padding: 28px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  transition: all 0.3s ease;
 }
 
 .balance-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 16px;
+  margin-bottom: 20px;
 }
 
 .balance-label {
-  font-size: 16px;
-  color: var(--text-secondary);
-  font-weight: 500;
+  font-size: 15px;
+  color: rgba(255, 255, 255, 0.9);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
 .header-actions {
@@ -61,20 +67,21 @@
 
 .visibility-toggle,
 .logout-btn {
-  background: none;
-  border: none;
-  color: var(--text-tertiary);
+  background: rgba(255, 255, 255, 0.25);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  color: #ffffff;
   cursor: pointer;
-  padding: 8px;
-  border-radius: 8px;
-  transition: all 0.2s ease;
+  padding: 10px;
+  border-radius: 12px;
+  transition: all 0.3s ease;
   display: flex;
   align-items: center;
   justify-content: center;
 
   &:hover {
-    background: var(--hover-bg);
-    color: var(--primary-color);
+    background: rgba(255, 255, 255, 0.4);
+    transform: translateY(-2px);
   }
 
   .material-icons {
@@ -84,20 +91,21 @@
 
 .logout-btn {
   &:hover {
-    color: var(--error-color);
-    background: color-mix(in srgb, var(--error-color) 10%, transparent);
+    background: rgba(239, 68, 68, 0.3);
+    border-color: rgba(239, 68, 68, 0.5);
   }
 }
 
 .balance-amount {
-  margin-bottom: 12px;
-  min-height: 44px;
+  margin-bottom: 16px;
+  min-height: 52px;
 
   h2 {
-    font-size: 36px;
-    font-weight: 800;
-    color: var(--text-primary);
+    font-size: 44px;
+    font-weight: 900;
+    color: #ffffff;
     margin: 0;
+    letter-spacing: -1.5px;
     letter-spacing: -1px;
     transition: all 0.3s ease;
 
@@ -120,10 +128,15 @@
 .balance-skeleton {
   height: 36px;
   width: 60%;
-  background: linear-gradient(90deg, var(--background-tertiary) 25%, var(--border-color) 50%, var(--background-tertiary) 75%);
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0.3) 25%, rgba(255, 255, 255, 0.5) 50%, rgba(255, 255, 255, 0.3) 75%);
   background-size: 200% 100%;
   border-radius: 8px;
   animation: shimmer 1.5s infinite;
+  
+  .dark & {
+    background: linear-gradient(90deg, rgba(255, 255, 255, 0.15) 25%, rgba(255, 255, 255, 0.3) 50%, rgba(255, 255, 255, 0.15) 75%);
+    background-size: 200% 100%;
+  }
 }
 
 .balance-variation {
@@ -259,6 +272,11 @@
   background-size: 200% 100%;
   border-radius: 6px;
   animation: shimmer 1.5s infinite;
+  
+  .dark & {
+    background: linear-gradient(90deg, rgba(255, 255, 255, 0.08) 25%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.08) 75%);
+    background-size: 200% 100%;
+  }
 }
 
 @keyframes shimmer {
@@ -510,6 +528,11 @@
   background-size: 200% 100%;
   animation: shimmer 1.5s infinite;
   flex-shrink: 0;
+  
+  .dark & {
+    background: linear-gradient(90deg, rgba(255, 255, 255, 0.08) 25%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.08) 75%);
+    background-size: 200% 100%;
+  }
 }
 
 .transaction-details-skeleton {
@@ -526,6 +549,11 @@
   background-size: 200% 100%;
   border-radius: 4px;
   animation: shimmer 1.5s infinite;
+  
+  .dark & {
+    background: linear-gradient(90deg, rgba(255, 255, 255, 0.08) 25%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.08) 75%);
+    background-size: 200% 100%;
+  }
 }
 
 .transaction-date-skeleton {
@@ -535,6 +563,11 @@
   background-size: 200% 100%;
   border-radius: 4px;
   animation: shimmer 1.5s infinite;
+  
+  .dark & {
+    background: linear-gradient(90deg, rgba(255, 255, 255, 0.08) 25%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.08) 75%);
+    background-size: 200% 100%;
+  }
 }
 
 .transaction-amount-skeleton {
@@ -545,7 +578,13 @@
   border-radius: 4px;
   animation: shimmer 1.5s infinite;
   flex-shrink: 0;
+  
+  .dark & {
+    background: linear-gradient(90deg, rgba(255, 255, 255, 0.08) 25%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.08) 75%);
+    background-size: 200% 100%;
+  }
 }
+
 
 // Estado vazio das transações
 .empty-transactions {

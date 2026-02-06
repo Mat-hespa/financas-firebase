@@ -38,44 +38,47 @@ import { MatIconModule } from '@angular/material/icon';
       position: relative;
       padding: 0;
       overflow: hidden;
-      background: var(--background-primary);
+      background: var(--background-secondary);
       border-radius: 24px;
+      width: 100%;
     }
 
     .close-btn {
       position: absolute;
-      top: 12px;
-      right: 12px;
+      top: 8px;
+      right: 8px;
       color: var(--text-tertiary);
       z-index: 10;
+      width: 36px;
+      height: 36px;
       transition: all 0.2s ease;
     }
 
     .close-btn:hover {
       color: var(--text-primary);
-      background: var(--background-secondary);
+      background: var(--background-tertiary);
     }
 
     .dialog-body {
-      padding: 48px 32px;
+      padding: 40px 28px 32px;
       text-align: center;
     }
 
     .icon-wrapper {
-      width: 100px;
-      height: 100px;
+      width: 80px;
+      height: 80px;
       margin: 0 auto 24px;
-      background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+      background: var(--primary-gradient);
       border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
-      box-shadow: 0 8px 32px rgba(59, 130, 246, 0.3);
-      animation: scaleIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+      box-shadow: 0 8px 32px rgba(109, 40, 217, 0.25);
+      animation: scaleIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
     }
 
     .icon-wrapper .material-icons {
-      font-size: 56px;
+      font-size: 48px;
       color: white;
     }
 
@@ -91,32 +94,32 @@ import { MatIconModule } from '@angular/material/icon';
     }
 
     h2 {
-      font-size: 28px;
+      font-size: 24px;
       font-weight: 800;
       color: var(--text-primary);
-      margin: 0 0 12px 0;
+      margin: 0 0 10px 0;
       letter-spacing: -0.5px;
     }
 
     p {
-      font-size: 16px;
+      font-size: 15px;
       color: var(--text-secondary);
-      margin: 0 0 32px 0;
+      margin: 0 0 28px 0;
       line-height: 1.5;
     }
 
     .actions {
       display: flex;
       flex-direction: column;
-      gap: 12px;
+      gap: 10px;
     }
 
     .btn-primary,
     .btn-secondary {
       width: 100%;
-      height: 56px;
+      height: 52px;
       border: none;
-      border-radius: 16px;
+      border-radius: 14px;
       font-size: 16px;
       font-weight: 700;
       cursor: pointer;
@@ -125,14 +128,14 @@ import { MatIconModule } from '@angular/material/icon';
     }
 
     .btn-primary {
-      background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+      background: var(--primary-gradient);
       color: white;
-      box-shadow: 0 4px 16px rgba(59, 130, 246, 0.3);
+      box-shadow: 0 4px 16px rgba(109, 40, 217, 0.25);
     }
 
     .btn-primary:hover {
       transform: translateY(-2px);
-      box-shadow: 0 8px 24px rgba(59, 130, 246, 0.4);
+      box-shadow: 0 8px 24px rgba(109, 40, 217, 0.35);
     }
 
     .btn-primary:active {
@@ -146,8 +149,9 @@ import { MatIconModule } from '@angular/material/icon';
     }
 
     .btn-secondary:hover {
-      background: var(--background-secondary);
+      background: var(--background-tertiary);
       color: var(--text-primary);
+      border-color: var(--text-tertiary);
     }
 
     @media (max-width: 768px) {

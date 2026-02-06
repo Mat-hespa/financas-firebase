@@ -43,17 +43,10 @@ export class ThemeService {
   }
 
   private updateThemeColor(isDark: boolean): void {
+    // Meta tag theme-color fica sempre branca para combinar com status bar
     const themeColorMeta = document.querySelector('meta[name="theme-color"]');
-    const backgroundColor = isDark ? '#0f172a' : '#fafbfc';
-    
     if (themeColorMeta) {
-      themeColorMeta.setAttribute('content', backgroundColor);
-    }
-    
-    // iOS sempre usa black-translucent para mostrar o background por trás
-    const appleStatusBarMeta = document.querySelector('meta[name="apple-mobile-web-app-status-bar-style"]');
-    if (appleStatusBarMeta) {
-      appleStatusBarMeta.setAttribute('content', 'black-translucent');
+      themeColorMeta.setAttribute('content', '#ffffff');
     }
   }
 }

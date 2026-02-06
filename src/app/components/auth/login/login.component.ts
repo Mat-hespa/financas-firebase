@@ -11,6 +11,7 @@ import { MatSnackBarModule, MatSnackBar } from '@angular/material/snack-bar';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { AuthService } from '../../../services/auth.service';
 import { BiometricSetupDialogComponent } from './biometric-setup-dialog.component';
+import { ThemeService } from '../../../services/theme.service';
 
 @Component({
   selector: 'app-login',
@@ -44,7 +45,8 @@ export class LoginComponent implements OnInit {
     private authService: AuthService,
     private router: Router,
     private snackBar: MatSnackBar,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private themeService: ThemeService
   ) {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
@@ -57,6 +59,15 @@ export class LoginComponent implements OnInit {
     
     // Verificar disponibilidade de biometria
     this.checkBiometricAvailability();
+  }
+
+  // Getter para acessar o signal do tema
+  get isDarkMode() {
+    return this.themeService.isDarkMode;
+  }
+
+  toggleTheme(): void {
+    this.themeService.toggleTheme();
   }
 
   async ngOnInit() {
