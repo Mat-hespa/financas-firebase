@@ -37,13 +37,11 @@ export class DashboardComponent implements OnInit {
   constructor() {
     this.currentBalance$ = this.transactionService.getCurrentBalance().pipe(
       debounceTime(100), // Pequeno delay para evitar mudanças muito rápidas
-      delay(5000), // TIMEOUT LONGO PARA VER SKELETON
       shareReplay(1)
     );
     
     this.recentTransactions$ = this.transactionService.getRecentTransactions(3).pipe(
       debounceTime(100),
-      delay(5000), // TIMEOUT LONGO PARA VER SKELETON
       shareReplay(1)
     );
 
@@ -52,7 +50,6 @@ export class DashboardComponent implements OnInit {
 
     this.monthlyTotals$ = this.transactionService.getMonthlyTransactions(currentMonth, currentYear).pipe(
       debounceTime(100),
-      delay(5000), // TIMEOUT LONGO PARA VER SKELETON
       map(transactions => {
         if (!transactions || transactions.length === 0) {
           return { income: 0, expense: 0 }; // Retorna valores 0 explicitamente
