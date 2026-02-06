@@ -1,9 +1,10 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, effect } from '@angular/core';
 import { Router, RouterOutlet, NavigationEnd } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { filter } from 'rxjs/operators';
 import { ThemeService } from './services/theme.service';
 import { ScrollService } from './services/scroll.service';
+import { StatusBarService } from './services/status-bar.service';
 import { FooterComponent } from './components/shared/footer/footer.component';
 
 @Component({
@@ -15,6 +16,7 @@ import { FooterComponent } from './components/shared/footer/footer.component';
 export class AppComponent {
   private themeService = inject(ThemeService);
   private scrollService = inject(ScrollService); // Injeta o serviço de scroll para inicializá-lo
+  private statusBarService = inject(StatusBarService);
   private router = inject(Router);
   
   private authenticatedRoutes = ['/dashboard', '/add-transaction', '/analytics', '/transactions'];
@@ -27,6 +29,12 @@ export class AppComponent {
       .subscribe((event: NavigationEnd) => {
         this.currentRoute = event.url;
       });
+
+    // Atualizar status bar quando o tema mudar
+    effect(() => {
+      this.themeService.isDarkMode(); // Acessa o signal para criar dependência
+      this.statusBarService.updateStatusBarColor();
+    });
   }
 
   // Getter para acessar o signal do tema
