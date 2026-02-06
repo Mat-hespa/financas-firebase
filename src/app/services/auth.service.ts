@@ -1,12 +1,14 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { Auth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, user, setPersistence, browserLocalPersistence } from '@angular/fire/auth';
 import { Observable } from 'rxjs';
+import { BiometricService } from './biometric.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
   user$: Observable<any>;
+  private biometricService = inject(BiometricService);
 
   constructor(private auth: Auth) {
     this.user$ = user(this.auth);
@@ -80,5 +82,100 @@ export class AuthService {
   // Método para verificar se há um usuário autenticado
   getCurrentUser() {
     return this.auth.currentUser;
+  }
+
+  // ==================== MÉTODOS DE BIOMETRIA ====================
+
+  /**
+   * Verifica se a biometria está disponível no dispositivo
+   */
+  async isBiometricAvailable(): Promise<boolean> {
+    return await this.biometricService.isBiometricAvailable();
+  }
+
+  /**
+   * Registra biometria para o usuário atual
+   */
+  async registerBiometric(password?: string): Promise<boolean> {
+    const currentUser = this.getCurrentUser();
+    if (!currentUser || !currentUser.email) {
+      throw new Error('Nenhum usuário autenticado');
+    }
+
+    try {
+      await this.biometricService.registerBiometric(currentUser.email, currentUser.uid, password);
+      return true;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  /**
+   * Login usando biometria - COMPLETO com auto-login no Firebase
+   */
+  async loginWithBiometric(email?: string): Promise<any> {
+    try {
+      // Autentica com biometria para obter credenciais
+      const credentials = await this.biometricService.authenticateWithBiometric(email);
+      
+      if (!credentials.password) {
+        // Biometria validada mas não há senha salva
+        return { 
+          email: credentials.email, 
+          success: true,
+          needsPassword: true 
+        };
+      }
+      
+      // Faz login automático no Firebase com credenciais descriptografadas
+      const result = await this.login(credentials.email, credentials.password, true);
+      
+      return { 
+        email: credentials.email, 
+        success: true,
+        needsPassword: false,
+        firebaseResult: result
+      };
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  /**
+   * Verifica se há credencial biométrica para um email
+   */
+  hasBiometricCredential(email: string): boolean {
+    return this.biometricService.hasCredentialForEmail(email);
+  }
+
+  /**
+   * Remove credencial biométrica
+   */
+  removeBiometricCredential(email: string): void {
+    this.biometricService.removeCredential(email);
+  }
+
+  /**
+   * Login com email e senha, com opção de registrar biometria
+   */
+  async loginAndSetupBiometric(email: string, password: string, enableBiometric: boolean = false): Promise<any> {
+    try {
+      // Faz login tradicional
+      const result = await this.login(email, password, true);
+      
+      // Se solicitado, registra biometria COM a senha
+      if (enableBiometric && await this.isBiometricAvailable()) {
+        try {
+          await this.registerBiometric(password); // Agora passa a senha
+        } catch (bioError) {
+          console.error('Erro ao registrar biometria:', bioError);
+          // Não falha o login se a biometria falhar
+        }
+      }
+      
+      return result;
+    } catch (error) {
+      throw error;
+    }
   }
 }

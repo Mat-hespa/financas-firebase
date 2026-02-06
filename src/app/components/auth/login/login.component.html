@@ -11,6 +11,31 @@
     </div>
 
     <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="login-form">
+      <!-- Indicador de tentativa automática de biometria -->
+      <div class="auto-biometric-indicator" *ngIf="tryingAutomaticBiometric">
+        <div class="pulse-circle">
+          <span class="material-icons">fingerprint</span>
+        </div>
+        <p>Aguardando autenticação biométrica...</p>
+      </div>
+
+      <!-- Botão de Login Biométrico - Destaque Principal -->
+      <button
+        type="button"
+        class="biometric-button primary"
+        *ngIf="biometricAvailable && hasBiometricCredential && !tryingAutomaticBiometric"
+        (click)="loginWithBiometric()"
+        [disabled]="isLoading"
+      >
+        <span class="material-icons">fingerprint</span>
+        Entrar com Biometria
+      </button>
+
+      <!-- Divider "ou" quando há biometria -->
+      <div class="divider" *ngIf="biometricAvailable && hasBiometricCredential && !tryingAutomaticBiometric">
+        <span>ou entre com senha</span>
+      </div>
+
       <div class="input-group">
         <label class="input-label">Email</label>
         <input
