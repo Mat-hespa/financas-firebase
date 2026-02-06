@@ -50,10 +50,10 @@ export class ThemeService {
       themeColorMeta.setAttribute('content', backgroundColor);
     }
     
-    // Também atualizar para iOS
+    // iOS sempre usa black-translucent para mostrar o background por trás
     const appleStatusBarMeta = document.querySelector('meta[name="apple-mobile-web-app-status-bar-style"]');
     if (appleStatusBarMeta) {
-      appleStatusBarMeta.setAttribute('content', isDark ? 'black-translucent' : 'default');
+      appleStatusBarMeta.setAttribute('content', 'black-translucent');
     }
   }
 }

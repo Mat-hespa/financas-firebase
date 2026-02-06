@@ -78,11 +78,6 @@ export class LoginComponent implements OnInit {
         
         await this.router.navigate(['/dashboard']);
         setTimeout(() => window.scrollTo({ top: 0, behavior: 'instant' }), 100);
-        
-        this.snackBar.open('Login realizado com sucesso!', 'Fechar', {
-          duration: 3000,
-          panelClass: ['success-snackbar']
-        });
       } catch (error: any) {
         let message = 'Erro ao fazer login';
         if (error.code === 'auth/user-not-found') {
@@ -139,10 +134,6 @@ export class LoginComponent implements OnInit {
         await this.router.navigate(['/dashboard']);
         // Garante que a página está no topo
         setTimeout(() => window.scrollTo({ top: 0, behavior: 'instant' }), 100);
-        this.snackBar.open('Login biométrico realizado! 🎉', 'Fechar', {
-          duration: 2000,
-          panelClass: ['success-snackbar']
-        });
       }
     } catch (error: any) {
       // Erro silencioso - usuário pode fazer login manual
@@ -174,10 +165,6 @@ export class LoginComponent implements OnInit {
           // Login completo com sucesso!
           await this.router.navigate(['/dashboard']);
           setTimeout(() => window.scrollTo({ top: 0, behavior: 'instant' }), 100);
-          this.snackBar.open('Login biométrico realizado com sucesso! 🎉', 'Fechar', {
-            duration: 3000,
-            panelClass: ['success-snackbar']
-          });
         }
       }
     } catch (error: any) {
