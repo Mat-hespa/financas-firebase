@@ -82,6 +82,10 @@ html, body {
   -webkit-user-select: none;
   user-select: none;
   -webkit-tap-highlight-color: transparent;
+
+  // iOS status bar fix - estende o fundo até a safe area
+  padding-top: env(safe-area-inset-top);
+  padding-bottom: env(safe-area-inset-bottom);
 }
 
 // Estilos para snackbars
